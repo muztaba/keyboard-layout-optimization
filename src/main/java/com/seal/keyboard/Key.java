@@ -11,12 +11,14 @@ public class Key implements Serializable {
     private final char latter;
     private final Point position;
     private final Hand hand;
+    private final Finger finger;
 
 
-    public Key(char latter, int row, int col, Hand hand) {
+    public Key(char latter, int row, int col, Hand hand, Finger finger) {
         this.latter = latter;
         position = new Point(row, col);
         this.hand = hand;
+        this.finger = finger;
     }
 
     public char getLatter() {
@@ -29,5 +31,9 @@ public class Key implements Serializable {
 
     public Hand getHand() {
         return hand;
+    }
+
+    public Finger getFinger() {
+        return finger;
     }
 }
