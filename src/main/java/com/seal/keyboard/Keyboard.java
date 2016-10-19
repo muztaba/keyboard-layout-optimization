@@ -15,4 +15,12 @@ public class Keyboard implements Serializable {
         this.keyMap = keyMap;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        keyMap.forEach((k,v) -> {
+            builder.append(k).append(v);
+        });
+        return builder.toString();
+    }
 }
