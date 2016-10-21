@@ -19,7 +19,10 @@ public class App {
 class Test {
     public void testFileRead() {
         List<String> list = FileUtil.lines("qwerty.txt");
-        Keyboard qwerty = new Configuration().loadQwert(list);
-        System.out.println(qwerty);
+        List<String> list1 = FileUtil.lines("bijoy.txt");
+        Keyboard bijoy = new Configuration().loadQwert(list)
+                .loadKeyMap(list1)
+                .buildKeyboard();
+        System.out.println(bijoy);
     }
 }
