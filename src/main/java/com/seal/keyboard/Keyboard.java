@@ -26,4 +26,12 @@ public class Keyboard implements Serializable {
                 builder.append(k).append(" ").append(v).append("\n"));
         return builder.toString();
     }
+
+    private class ObjectiveFunction implements com.seal.keyboard.ObjectiveFunction{
+
+        @Override
+        public int keyPress() {
+            return 0;
+        }
+    }
 }
