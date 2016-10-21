@@ -18,9 +18,9 @@ public class Keyboard implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        keyMap.forEach((k,v) -> {
-            builder.append(k).append(v);
-        });
+        keyMap.forEach((k,v) ->
+            builder.append(k).append(" ").append(v).append("\n")
+        );
         return builder.toString();
     }
 }
