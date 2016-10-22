@@ -27,11 +27,30 @@ public class Keyboard implements Serializable {
         return builder.toString();
     }
 
+    public ObjectiveFunction getObjectiveFunction() {
+        return new ObjectiveFunction();
+    }
+
     private class ObjectiveFunction implements com.seal.keyboard.ObjectiveFunction{
 
         @Override
-        public int keyPress() {
-            return 0;
+        public int keyPress(String string) {
+            int count = 0;
+            String[] strs = Util.split(string, " ");
+            for (String str : strs) {
+                for (char c : str.toCharArray()) {
+                    String ch = String.valueOf(c);
+                    if (keyMap.containsKey(ch))
+                        count += keyMap.get(ch).length();
+                }
+            }
+            return count;
+        }
+    }
+
+    private static class Util {
+        public static String[] split(String str, String regex) {
+            return str.split(regex);
         }
     }
 }

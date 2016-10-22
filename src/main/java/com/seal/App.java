@@ -2,7 +2,9 @@ package com.seal;
 
 import com.seal.keyboard.Configuration;
 import com.seal.keyboard.Keyboard;
+import com.seal.keyboard.ObjectiveFunction;
 import com.seal.util.FileUtil;
+import com.seal.util.ReadFile;
 
 import java.util.List;
 
@@ -23,6 +25,10 @@ class Test {
         Keyboard bijoy = new Configuration().loadQwert(list)
                 .loadKeyMap(list1)
                 .buildKeyboard();
-        System.out.println(bijoy);
+
+        ReadFile reader = new ReadFile("text.txt");
+        String str = reader.readNext(10);
+        ObjectiveFunction of = bijoy.getObjectiveFunction();
+        System.out.println(of.keyPress(str));
     }
 }
