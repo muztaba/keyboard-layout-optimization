@@ -41,7 +41,7 @@ public class Keyboard implements Serializable {
                 for (char c : str.toCharArray()) {
                     String ch = String.valueOf(c);
                     if (keyMap.containsKey(ch))
-                        count += keyMap.get(ch).length();
+                        count += Util.pressCount(keyMap.get(ch));
                 }
             }
             return count;
@@ -49,8 +49,20 @@ public class Keyboard implements Serializable {
     }
 
     private static class Util {
-        public static String[] split(String str, String regex) {
+        static String[] split(String str, String regex) {
             return str.split(regex);
+        }
+
+        static int pressCount(String str) {
+            int count = 0;
+            for (int i = 0; i < str.length(); i++) {
+                // Upper case define Shift + Key
+                if (Character.isUpperCase(str.charAt(i)))
+                    count += 2;
+                else
+                    count += 1;
+            }
+            return count;
         }
     }
 }
