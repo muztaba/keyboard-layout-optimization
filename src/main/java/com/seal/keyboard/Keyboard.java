@@ -46,6 +46,14 @@ public class Keyboard implements Serializable {
             }
             return count;
         }
+
+        @Override
+        public int handAlternation(String string) {
+            int count = 0;
+            Hand prev;
+
+            return 0;
+        }
     }
 
     private static class Util {
