@@ -1,11 +1,11 @@
 package com.seal;
 
-import com.seal.keyboard.Configuration;
-import com.seal.keyboard.Keyboard;
-import com.seal.keyboard.ObjectiveFunction;
+import com.seal.keyboard.*;
 import com.seal.util.FileUtil;
+import com.seal.util.KeyMapProcessor;
 import com.seal.util.ReadFile;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,9 +26,27 @@ class Test {
                 .loadKeyMap(list1)
                 .buildKeyboard();
 
+        KeyMap<Character, String> keyMap = loadKeyMap(list1);
+
         ReadFile reader = new ReadFile("text.txt");
         String str = reader.readNext(10);
-        ObjectiveFunction of = bijoy.getObjectiveFunction();
-        System.out.println(of.keyPress(str));
+        String keyMapBijoy = KeyMapProcessor.getInstance(keyMap)
+                .setString(str)
+                .getKeyMap();
+        System.out.println(keyMapBijoy);
+    }
+
+    public KeyMap<Character, String> loadKeyMap(List<String > list) {
+        HashMap<Character, String > keyMap = new HashMap<>();
+
+        for (String str : list) {
+            String[] strs = str.split(" ");
+            if (keyMap.containsValue(strs[0]))
+                throw new RuntimeException("Already keymap exit for" + strs[0] + " is " + strs[1]);
+            keyMap.put(strs[0].charAt(0), strs[1]);
+        }
+
+        KeyMap<Character, String> keyMap1 = new KeyMap<>(keyMap);
+        return        keyMap1;
     }
 }
