@@ -35,42 +35,31 @@ public class Keyboard implements Serializable {
 
         @Override
         public int keyPress(String string) {
-            int count = 0;
-            String[] strs = Util.split(string, " ");
-            for (String str : strs) {
-                for (char c : str.toCharArray()) {
-                    String ch = String.valueOf(c);
-                    if (keyMap.containsKey(ch))
-                        count += Util.pressCount(keyMap.get(ch));
-                }
-            }
-            return count;
+            return string.length();
         }
 
         @Override
         public int handAlternation(String string) {
             int count = 0;
-            Hand prev;
+            Hand prev = null;
 
-            return 0;
-        }
-    }
+            for (char c : string.toCharArray()) {
+                if (!isModifier(c)) {
+                    Hand _prev = keyPosition
+                            .get(String.valueOf(c))
+                            .getHand();
 
-    private static class Util {
-        static String[] split(String str, String regex) {
-            return str.split(regex);
-        }
-
-        static int pressCount(String str) {
-            int count = 0;
-            for (int i = 0; i < str.length(); i++) {
-                // Upper case define Shift + Key
-                if (Character.isUpperCase(str.charAt(i)))
-                    count += 2;
-                else
-                    count += 1;
+                    if (prev == null)
+                        prev = _prev;
+                    else if (prev == _prev)
+                        count++;
+                }
             }
             return count;
+        }
+
+        private boolean isModifier(char c) {
+            return c == '+' || c == '-' || c == '=';
         }
     }
 }
