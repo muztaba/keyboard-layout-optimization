@@ -35,12 +35,6 @@ public class KeyMapProcessor {
                     builder.append(keyMap.getMap((char) i));
                 });
 
-        /*for (int i = 0; i < string.length(); i++) {
-            int codePoint = string.codePointAt(i);
-            if (!Character.isSpaceChar(codePoint) && isBangla(codePoint))
-                builder.append(keyMap.getMap(string.charAt(i)));
-        }*/
-
         return this;
     }
 

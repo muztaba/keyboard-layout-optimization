@@ -12,7 +12,7 @@ public class Keyboard implements Serializable {
     private final Map<String, Key> keyPosition;
     private final Map<String, String> keyMap;
 
-    public Keyboard(Map<String, Key> keyPosition, Map<String, String> keyMap ) {
+    public Keyboard(Map<String, Key> keyPosition, Map<String, String> keyMap) {
         this.keyPosition = keyPosition;
         this.keyMap = keyMap;
     }
@@ -21,7 +21,7 @@ public class Keyboard implements Serializable {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         keyPosition.forEach((k, v) ->
-            builder.append(k).append(" ").append(v).append("\n"));
+                builder.append(k).append(" ").append(v).append("\n"));
         builder.append("\n\n");
         keyMap.forEach((k, v) ->
                 builder.append(k).append(" ").append(v).append("\n"));
@@ -32,7 +32,7 @@ public class Keyboard implements Serializable {
         return new ObjectiveFunction();
     }
 
-    private class ObjectiveFunction implements com.seal.keyboard.ObjectiveFunction{
+    private class ObjectiveFunction implements com.seal.keyboard.ObjectiveFunction {
 
         @Override
         public int keyPress(String string) {
@@ -48,6 +48,7 @@ public class Keyboard implements Serializable {
                 count += t ? 1 : 0;
                 prev = t ? prev : getKey(c).getHand();
             }
+
             return count;
         }
 
@@ -66,15 +67,13 @@ public class Keyboard implements Serializable {
 
             for (char c : str.toCharArray()) {
                 boolean t = sameHand(c, (Objects.isNull(prevKey)) ? null : prevKey.getHand());
-                if (t) {
-                    count += prevKey.getPosition()
-                            .distance(getKey(c)
-                                    .getPosition());
-                } else {
-                    prevKey = getKey(c);
-                }
-            }
 
+                if (t) count += prevKey.getPosition()
+                        .distance(getKey(c)
+                                .getPosition());
+                else
+                    prevKey = getKey(c);
+            }
             return count;
         }
 
