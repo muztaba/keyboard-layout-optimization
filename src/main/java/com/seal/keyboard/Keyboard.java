@@ -2,6 +2,7 @@ package com.seal.keyboard;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by seal on 10/1/2016.
@@ -42,19 +43,38 @@ public class Keyboard implements Serializable {
         public int handAlternation(String string) {
             int count = 0;
             Hand prev = null;
-
             for (char c : string.toCharArray()) {
-                if (!isModifier(c)) {
-                    Hand _prev = keyPosition
-                            .get(String.valueOf(c))
-                            .getHand();
+                boolean t = sameHand(c, prev);
+                count += t ? 1 : 0;
+                prev = t ? prev : getKey(c).getHand();
+            }
+            return count;
+        }
 
-                    if (prev == null)
-                        prev = _prev;
-                    else if (prev == _prev)
-                        count++;
+        private boolean sameHand(char c, Hand prev) {
+            return (!isModifier(c)) && (getKey(c).getHand() == prev);
+        }
+
+        private Key getKey(char c) {
+            return keyPosition.get(String.valueOf(c));
+        }
+
+        @Override
+        public double sameFingerUse(String str) {
+            double count = 0.0;
+            Key prevKey = null;
+
+            for (char c : str.toCharArray()) {
+                boolean t = sameHand(c, (Objects.isNull(prevKey)) ? null : prevKey.getHand());
+                if (t) {
+                    count += prevKey.getPosition()
+                            .distance(getKey(c)
+                                    .getPosition());
+                } else {
+                    prevKey = getKey(c);
                 }
             }
+
             return count;
         }
 

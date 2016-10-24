@@ -8,4 +8,6 @@ public interface ObjectiveFunction {
     int keyPress(String str);
 
     int handAlternation(String str);
+
+    double sameFingerUse(String str);
 }
