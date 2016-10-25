@@ -1,7 +1,7 @@
-অ F
+অ +f
 আ gf
 ই gd
-ঈ gD
+ঈ g+d
 উ gs
 ঊ gS
 ঋ ga
