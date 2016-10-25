@@ -19,4 +19,22 @@ public class KeyMap<C, M> {
             return keyMap.get(c);
         return (M)"";
     }
+
+ /*   public static Builder builder() {
+        return new Builder<>();
+    }
+
+    private static class Builder<C, M> {
+        private Map<C, M> keyMap;
+
+        public Builder setKeyMap(Map<C, M> keyMap) {
+            this.keyMap = keyMap;
+            return this;
+        }
+
+        public KeyMap<C, M> build() {
+            return new KeyMap<C, M>(keyMap);
+        }
+
+    }*/
 }

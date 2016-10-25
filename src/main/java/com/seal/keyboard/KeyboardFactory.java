@@ -3,19 +3,15 @@ package com.seal.keyboard;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by seal on 10/19/2016.
  */
-public class Configuration {
+public class KeyboardFactory {
     private Map<String, Key> keyPosition;
-    private Map<String, String> keyMap;
 
-
-    public Configuration loadQwert(List<String> list) {
-        keyPosition = new HashMap<>();
-
+    public static Keyboard loadQwert(List<String> list) {
+        Map<String, Key> keyPosition = new HashMap<>();
         for (String str : list) {
             String[] strs = str.split(" ");
             if (!keyPosition.containsKey(strs[0])) {
@@ -30,28 +26,25 @@ public class Configuration {
 
             }
         }
-        return this;
+
+        return new Keyboard(keyPosition);
     }
 
-    public Configuration loadKeyMap(List<String> list) {
-        keyMap = new HashMap<>();
-
+    public static KeyMap<Character, String> loadKeyMap(List<String > list) {
+        HashMap<Character, String> map = new HashMap<>();
         for (String str : list) {
             String[] strs = str.split(" ");
-            if (keyMap.containsValue(strs[0]))
+            if (map.containsValue(strs[0]))
                 throw new RuntimeException("Already keymap exit for" + strs[0] + " is " + strs[1]);
-            keyMap.put(strs[0], strs[1]);
+            map.put(strs[0].charAt(0), strs[1]);
         }
-        return this;
+
+        return new KeyMap<>(map);
     }
 
-    public Keyboard buildKeyboard() {
-        Objects.requireNonNull(keyPosition, "KeyPosition is null");
-        Objects.requireNonNull(keyMap, "keymap is null");
-        return new Keyboard(keyPosition, keyMap);
-    }
 
-    private Hand hand(String str) {
+
+    private static Hand hand(String str) {
         switch (str) {
             case "r" :
                 return Hand.Right;
@@ -61,7 +54,7 @@ public class Configuration {
         throw new RuntimeException("No Hand Define");
     }
 
-    private Finger finger(String str) {
+    private static Finger finger(String str) {
         switch (str) {
             case "f":
                 return Finger.Forfinger;

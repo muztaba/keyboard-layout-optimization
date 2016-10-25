@@ -1,5 +1,8 @@
 package com.seal.keyboard;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
@@ -9,21 +12,18 @@ import java.util.Objects;
  */
 public class Keyboard implements Serializable {
 
-    private final Map<String, Key> keyPosition;
-    private final Map<String, String> keyMap;
+    private static final Logger logger = LoggerFactory.getLogger(Keyboard.class);
 
-    public Keyboard(Map<String, Key> keyPosition, Map<String, String> keyMap) {
+    private final Map<String, Key> keyPosition;
+
+    public Keyboard(Map<String, Key> keyPosition) {
         this.keyPosition = keyPosition;
-        this.keyMap = keyMap;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         keyPosition.forEach((k, v) ->
-                builder.append(k).append(" ").append(v).append("\n"));
-        builder.append("\n\n");
-        keyMap.forEach((k, v) ->
                 builder.append(k).append(" ").append(v).append("\n"));
         return builder.toString();
     }
@@ -44,9 +44,13 @@ public class Keyboard implements Serializable {
             int count = 0;
             Hand prev = null;
             for (char c : string.toCharArray()) {
-                boolean t = sameHand(c, prev);
-                count += t ? 1 : 0;
-                prev = t ? prev : getKey(c).getHand();
+                try {
+                    boolean t = sameHand(c, prev);
+                    count += t ? 1 : 0;
+                    prev = t ? prev : getKey(c).getHand();
+                } catch (NullPointerException e) {
+                    logger.warn("Can't find any keymap of {} letter", c);
+                }
             }
 
             return count;

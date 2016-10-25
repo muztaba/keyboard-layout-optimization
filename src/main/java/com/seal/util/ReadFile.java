@@ -17,7 +17,7 @@ public class ReadFile {
         }
     }
 
-    public String readNext(int line) {
+    public String readNextLine(int line) {
         StringBuilder builder = new StringBuilder();
         try {
             for (int i = 0; i < line; i++) {
