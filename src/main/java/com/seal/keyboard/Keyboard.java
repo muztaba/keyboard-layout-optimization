@@ -44,6 +44,8 @@ public class Keyboard implements Serializable {
             int count = 0;
             Hand prev = null;
             for (char c : string.toCharArray()) {
+                if (isModifier(c))
+                    continue;
                 try {
                     boolean t = sameHand(c, prev);
                     count += t ? 1 : 0;
@@ -57,7 +59,7 @@ public class Keyboard implements Serializable {
         }
 
         private boolean sameHand(char c, Hand prev) {
-            return (!isModifier(c)) && (getKey(c).getHand() == prev);
+            return (getKey(c).getHand() == prev);
         }
 
         private Key getKey(char c) {
