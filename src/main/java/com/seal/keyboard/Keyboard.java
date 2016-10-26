@@ -72,6 +72,8 @@ public class Keyboard implements Serializable {
             Key prevKey = null;
 
             for (char c : str.toCharArray()) {
+                if (isModifier(c))
+                    continue;
                 boolean t = sameHand(c, (Objects.isNull(prevKey)) ? null : prevKey.getHand());
 
                 if (t) count += prevKey.getPosition()

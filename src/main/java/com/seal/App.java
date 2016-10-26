@@ -31,8 +31,9 @@ class Test {
                 .getKeyMap();
 
         ObjectiveFunction function = qwerty.getObjectiveFunction();
-        System.out.println(function.keyPress(keyMapBijoy));
-        System.out.println(function.handAlternation(keyMapBijoy));
+//        System.out.println(function.keyPress(keyMapBijoy));
+//        System.out.println(function.handAlternation(keyMapBijoy));
+        System.out.println(function.sameFingerUse(keyMapBijoy));
     }
 
 }
