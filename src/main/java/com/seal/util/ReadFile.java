@@ -1,6 +1,8 @@
 package com.seal.util;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created by seal on 10/22/2016.
@@ -11,7 +13,7 @@ public class ReadFile {
 
     public ReadFile(String path) {
         try {
-            this.reader = new BufferedReader(new FileReader(new File(path)));
+            this.reader = Files.newBufferedReader(Paths.get(path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
