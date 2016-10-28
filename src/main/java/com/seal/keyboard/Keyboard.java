@@ -32,6 +32,39 @@ public class Keyboard implements Serializable {
         return new ObjectiveFunction();
     }
 
+
+    private class ObjectiveFunction__ {
+
+        int handAlternationScore;
+        double sameFingerScore;
+
+        public void evalute(String str) {
+            Hand prev = null;
+            for (char c : str.toCharArray()) {
+                if (isModifier(c)) continue;
+                boolean t = sameHand(c, prev);
+
+                handAlternationScore += t ? 1 : 0;
+
+            }
+        }
+
+        private boolean isModifier(char c) {
+            return c == '+' || c == '-' || c == '=';
+        }
+
+        private boolean sameHand(char c, Hand prev) {
+            return (getKey(c).getHand() == prev);
+        }
+
+
+        private Key getKey(char c) {
+            return keyPosition.get(String.valueOf(c));
+        }
+
+    }
+
+
     private class ObjectiveFunction implements com.seal.keyboard.ObjectiveFunction {
 
         @Override
