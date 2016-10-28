@@ -20,20 +20,20 @@ public class KeyboardFactory {
 
     public static Keyboard loadQwert(List<String> list) {
         Map<String, Key> keyPosition = new HashMap<>();
-        for (String str : list) {
-            String[] strs = str.split(" ");
-            if (!keyPosition.containsKey(strs[0])) {
-                Key key = Key.builder()
-                        .setLatter('\0')
-                        .setRow(Integer.parseInt(strs[1]))
-                        .setCol(Integer.parseInt(strs[2]))
-                        .setHand(hand(strs[3]))
-                        .setFinger(finger(strs[4]))
-                        .build();
-                keyPosition.put(strs[0], key);
 
-            }
-        }
+        list.stream()
+                .map(i -> i.split(" "))
+                .filter(i -> !keyPosition.containsKey(i[0]))
+                .forEach(i -> {
+                    Key key = Key.builder()
+                            .setLatter('\0')
+                            .setRow(Integer.parseInt(i[1]))
+                            .setCol(Integer.parseInt(i[2]))
+                            .setHand(hand(i[3]))
+                            .setFinger(finger(i[4]))
+                            .build();
+                    keyPosition.put(i[0], key);
+                });
 
         return new Keyboard(keyPosition);
     }
