@@ -3,18 +3,19 @@ package com.seal.util;
 import com.seal.keyboard.KeyMap;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by seal on 10/23/16.
  */
 public class KeyMapProcessor {
 
-    private static final int BANGLA_START = 0x0980;
-    private static final int BANGLA_END = 0x09FF;
-    private static final int NUMBER_START = 0x09E6;
-    private static final int NUMBER_END = 0x09EF;
+    private static final int BANGLA_CHAR_START = 0x0980;
+    private static final int BANGLA_CHAR_END = 0x09FF;
+    private static final int BANGLA_NUMBER_START = 0x09E6;
+    private static final int BANGLA_NUMBER_END = 0x09EF;
 
-    private StringBuilder builder;
+    private String str;
 
     private KeyMap<Character, String> keyMap;
 
@@ -27,25 +28,28 @@ public class KeyMapProcessor {
     }
 
     public KeyMapProcessor setString(String string) {
-        this.builder = new StringBuilder();
-        string.chars()
+        this.str = string.chars()
                 .filter(i -> !Character.isSpaceChar(i))
                 .filter(this::isBangla)
-                .forEach(i -> {
-                    builder.append(keyMap.getMap((char) i));
-                });
+                .mapToObj(this::get)
+                .collect(Collectors.joining());
 
         return this;
     }
 
-    public String getKeyMap() {
-        Objects.requireNonNull(builder, "String is not set");
-        return builder.toString();
+    private String get(int  c) {
+        return keyMap.getMap((char)c);
     }
 
+    public String getKeyMap() {
+        Objects.requireNonNull(str, "String is not set");
+        return str;
+    }
+
+
     private boolean isBangla(int codePoint) {
-        return (codePoint >= BANGLA_START && codePoint <= BANGLA_END) &&
-                (codePoint <= NUMBER_START || codePoint >= NUMBER_END);
+        return (codePoint >= BANGLA_CHAR_START && codePoint <= BANGLA_CHAR_END) &&
+                (codePoint <= BANGLA_NUMBER_START || codePoint >= BANGLA_NUMBER_END);
     }
 
 }
