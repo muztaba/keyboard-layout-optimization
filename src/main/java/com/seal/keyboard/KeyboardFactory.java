@@ -3,6 +3,7 @@ package com.seal.keyboard;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by seal on 10/19/2016.
@@ -31,13 +32,10 @@ public class KeyboardFactory {
     }
 
     public static KeyMap<Character, String> loadKeyMap(List<String > list) {
-        HashMap<Character, String> map = new HashMap<>();
-        for (String str : list) {
-            String[] strs = str.split(" ");
-            if (map.containsValue(strs[0]))
-                throw new RuntimeException("Already keymap exit for" + strs[0] + " is " + strs[1]);
-            map.put(strs[0].charAt(0), strs[1]);
-        }
+        Map<Character, String> map = list.stream()
+                .map(i -> i.split(" "))
+                .filter(i -> i.length == 2)
+                .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
 
         return new KeyMap<>(map);
     }
