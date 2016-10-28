@@ -41,13 +41,13 @@ public class KeyboardFactory {
     public static KeyMap<Character, String> loadKeyMap(List<String > list) {
         Map<Character, String> map = list.stream()
                 .map(i -> i.split(" "))
-                .filter(check )
+                .filter(check)
                 .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
 
         return new KeyMap<>(map);
     }
 
-    private static Predicate<String[]> check = i -> {
+    private static final Predicate<String[]> check = i -> {
         if (i.length == 2) {
             return true;
         } else {
