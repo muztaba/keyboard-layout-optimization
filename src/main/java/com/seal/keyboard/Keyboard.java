@@ -33,93 +33,75 @@ public class Keyboard implements Serializable {
     }
 
 
-    private class ObjectiveFunction__ {
+    private class ObjectiveFunction {
 
-        int handAlternationScore;
-        double sameFingerScore;
+        int keyPress;
+        int handAlternation;
+        double distance;
+        double bigStepDistance;
 
-        public void evalute(String str) {
-            Hand prev = null;
-            for (char c : str.toCharArray()) {
+        public void evalute(CharSequence charSequence) {
+            keyPress = keyPressCounter(charSequence);
+            Key prev = null;
+            for (int i = 0; i < charSequence.length(); i++) {
+                char c = charSequence.charAt(i);
                 if (isModifier(c)) continue;
-                boolean t = sameHand(c, prev);
+                Key current = getKey(c);
 
-                handAlternationScore += t ? 1 : 0;
+                handAlternation += handAlternation(prev, current);
+                distance += sameFingerUse(prev, current);
+                bigStepDistance += bigStep(prev, current);
+
+                prev = current;
 
             }
         }
 
-        private boolean isModifier(char c) {
-            return c == '+' || c == '-' || c == '=';
+        private int keyPressCounter(CharSequence charSequence) {
+            return charSequence.length();
         }
 
-        private boolean sameHand(char c, Hand prev) {
-            return (getKey(c).getHand() == prev);
+        private int handAlternation(Key prev, Key current) {
+            return sameHand(prev, current) ? 1 : 0;
         }
 
-
-        private Key getKey(char c) {
-            return keyPosition.get(String.valueOf(c));
-        }
-
-    }
-
-
-    private class ObjectiveFunction implements com.seal.keyboard.ObjectiveFunction {
-
-        @Override
-        public int keyPress(String string) {
-            return string.length();
-        }
-
-        @Override
-        public int handAlternation(String string) {
-            int count = 0;
-            Hand prev = null;
-            for (char c : string.toCharArray()) {
-                if (isModifier(c))
-                    continue;
-                try {
-                    boolean t = sameHand(c, prev);
-                    count += t ? 1 : 0;
-                    prev = t ? prev : getKey(c).getHand();
-                } catch (NullPointerException e) {
-                    logger.warn("Can't find any keymap of {} letter", c);
-                }
-            }
-
-            return count;
-        }
-
-        private boolean sameHand(char c, Hand prev) {
-            return (getKey(c).getHand() == prev);
-        }
-
-        private Key getKey(char c) {
-            return keyPosition.get(String.valueOf(c));
-        }
-
-        @Override
-        public double sameFingerUse(String str) {
-            double count = 0.0;
-            Key prevKey = null;
-
-            for (char c : str.toCharArray()) {
-                if (isModifier(c))
-                    continue;
-                boolean t = sameHand(c, (Objects.isNull(prevKey)) ? null : prevKey.getHand());
-
-                if (t) count += prevKey.getPosition()
-                        .distance(getKey(c)
+        private double sameFingerUse(Key prev, Key current) {
+            double dist = 0.0;
+            if (!sameHand(prev, current) &&
+                    prev.getFinger() == current.getFinger()) {
+                dist = prev.getPosition()
+                        .distance(current
                                 .getPosition());
-                else
-                    prevKey = getKey(c);
             }
-            return count;
+            return dist;
+        }
+
+        private double bigStep(Key prev, Key current) {
+            double dist = 0.0;
+            if (!sameHand(prev, current) &&
+                    prev.getFinger() != current.getFinger()) {
+                dist = prev.getPosition()
+                        .distance(current
+                                .getPosition());
+            }
+            return dist;
         }
 
         private boolean isModifier(char c) {
             return c == '+' || c == '-' || c == '=';
         }
+
+        private boolean sameHand(Key prev, Key current) {
+            if (Objects.isNull(prev) || Objects.isNull(current))
+                return false;
+            return prev.getHand() != current.getHand();
+        }
+
+
+        private Key getKey(char c) {
+            return keyPosition.get(String.valueOf(c));
+        }
+
     }
+
 }
