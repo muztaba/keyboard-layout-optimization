@@ -32,10 +32,14 @@ class Test {
 
         System.out.println(keyMapBijoy);
 
-/*        ObjectiveFunction function = qwerty.getObjectiveFunction();
-//        System.out.println(function.keyPress(keyMapBijoy));
-//        System.out.println(function.handAlternation(keyMapBijoy));
-        System.out.println(function.sameFingerUse(keyMapBijoy));*/
+        Keyboard.Values score = qwerty.getObjectiveFunction()
+                .evalute(keyMapBijoy)
+                .getValues();
+
+        System.out.println(score);
+
+
+
     }
 
 }

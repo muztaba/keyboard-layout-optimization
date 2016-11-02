@@ -33,17 +33,19 @@ public class Keyboard implements Serializable {
     }
 
 
-    private class ObjectiveFunction {
+    public class ObjectiveFunction {
 
         int keyPress;
         int handAlternation;
         double distance;
         double bigStepDistance;
 
-        public void evalute(CharSequence charSequence) {
+
+        public ObjectiveFunction evalute(CharSequence charSequence) {
             keyPress = keyPressCounter(charSequence);
-            Key prev = null;
-            for (int i = 0; i < charSequence.length(); i++) {
+            Key prev = getKey(charSequence.charAt(0));  // avoiding null reference.
+
+            for (int i = 1; i < charSequence.length(); i++) {
                 char c = charSequence.charAt(i);
                 if (isModifier(c)) continue;
                 Key current = getKey(c);
@@ -55,20 +57,25 @@ public class Keyboard implements Serializable {
                 prev = current;
 
             }
+
+            return this;
         }
+
 
         private int keyPressCounter(CharSequence charSequence) {
             return charSequence.length();
         }
 
+
         private int handAlternation(Key prev, Key current) {
-            return sameHand(prev, current) ? 1 : 0;
+            return !sameHand(prev, current) ? 1 : 0;
         }
+
 
         private double sameFingerUse(Key prev, Key current) {
             double dist = 0.0;
-            if (!sameHand(prev, current) &&
-                    prev.getFinger() == current.getFinger()) {
+            if (sameHand(prev, current) &&
+                    sameFinger(prev, current)) {
                 dist = prev.getPosition()
                         .distance(current
                                 .getPosition());
@@ -76,25 +83,31 @@ public class Keyboard implements Serializable {
             return dist;
         }
 
+
         private double bigStep(Key prev, Key current) {
             double dist = 0.0;
-            if (!sameHand(prev, current) &&
-                    prev.getFinger() != current.getFinger()) {
+            if (sameHand(prev, current) &&
+                    !sameFinger(prev, current)) {
                 dist = prev.getPosition()
                         .distance(current
                                 .getPosition());
             }
             return dist;
         }
+
 
         private boolean isModifier(char c) {
             return c == '+' || c == '-' || c == '=';
         }
 
+
         private boolean sameHand(Key prev, Key current) {
-            if (Objects.isNull(prev) || Objects.isNull(current))
-                return false;
-            return prev.getHand() != current.getHand();
+            return prev.getHand() == current.getHand();
+        }
+
+
+        private boolean sameFinger(Key prev, Key current) {
+            return prev.getFinger() == current.getFinger();
         }
 
 
@@ -102,6 +115,38 @@ public class Keyboard implements Serializable {
             return keyPosition.get(String.valueOf(c));
         }
 
+
+        public Values getValues() {
+            return new Values(keyPress, handAlternation, distance, bigStepDistance);
+        }
+
+    }
+
+    public static class Values {
+
+        final int keyPress;
+        final int handAlternation;
+        final double distance;
+        final double bigStepDistance;
+
+
+        private Values(int keyPress, int handAlternation, double distance, double bigStepDistance) {
+            this.keyPress = keyPress;
+            this.handAlternation = handAlternation;
+            this.distance = distance;
+            this.bigStepDistance = bigStepDistance;
+        }
+
+
+        @Override
+        public String toString() {
+            return "Values{" +
+                    "keyPress=" + keyPress +
+                    ", handAlternation=" + handAlternation +
+                    ", distance=" + distance +
+                    ", bigStepDistance=" + bigStepDistance +
+                    '}';
+        }
     }
 
 }
