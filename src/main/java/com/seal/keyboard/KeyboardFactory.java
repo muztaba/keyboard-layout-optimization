@@ -69,9 +69,9 @@ public class KeyboardFactory {
     private static Finger finger(String str) {
         switch (str) {
             case "f":
-                return Finger.Forfinger;
+                return Finger.Forefinger;
             case "m" :
-                return Finger.Middleinger;
+                return Finger.MiddleFinger;
             case "r" :
                 return Finger.Ringfinger;
             case "p":
