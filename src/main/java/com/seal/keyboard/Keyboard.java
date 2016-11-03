@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -38,12 +39,14 @@ public class Keyboard {
         final int handAlternation;
         final double distance;
         final double bigStepDistance;
+        final int hitDirection;
 
-        private Values(int keyPress, int handAlternation, double distance, double bigStepDistance) {
+        private Values(int keyPress, int handAlternation, double distance, double bigStepDistance, int hitDirection) {
             this.keyPress = keyPress;
             this.handAlternation = handAlternation;
             this.distance = distance;
             this.bigStepDistance = bigStepDistance;
+            this.hitDirection = hitDirection;
         }
 
         @Override
@@ -53,6 +56,7 @@ public class Keyboard {
                     ", handAlternation=" + handAlternation +
                     ", distance=" + distance +
                     ", bigStepDistance=" + bigStepDistance +
+                    ", hitDirection=" + hitDirection +
                     '}';
         }
     }
@@ -63,6 +67,16 @@ public class Keyboard {
         int handAlternation;
         double distance;
         double bigStepDistance;
+        int hitDirection;
+
+        private final Map<Finger, Finger> fingerMovementMap = new EnumMap<>(Finger.class);
+
+        private ObjectiveFunction() {
+            fingerMovementMap.put(Finger.Pinkie, Finger.Ringfinger);
+            fingerMovementMap.put(Finger.Ringfinger, Finger.MiddleFinger);
+            fingerMovementMap.put(Finger.MiddleFinger, Finger.Forefinger);
+            fingerMovementMap.put(Finger.Forefinger, Finger.Pinkie);
+        }
 
         public ObjectiveFunction evaluate(CharSequence charSequence) {
             keyPress = charSequence.length();
@@ -80,6 +94,7 @@ public class Keyboard {
                         distance += fingerDistance(prev, current);
                     } else {
                         bigStepDistance += fingerDistance(prev, current);
+                        hitDirection += hitDirectionCount(prev, current);
                     }
                 }
 
@@ -87,6 +102,10 @@ public class Keyboard {
             }
 
             return this;
+        }
+
+        private int hitDirectionCount(Key prev, Key current) {
+            return fingerMovementMap.get(prev.getFinger()) != current.getFinger() ? 1 : 0;
         }
 
         private double fingerDistance(Key prev, Key current) {
@@ -110,7 +129,7 @@ public class Keyboard {
         }
 
         public Values getValues() {
-            return new Values(keyPress, handAlternation, distance, bigStepDistance);
+            return new Values(keyPress, handAlternation, distance, bigStepDistance, hitDirection);
         }
 
     }
