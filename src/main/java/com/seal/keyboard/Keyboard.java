@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by seal on 10/1/2016.
@@ -16,22 +16,52 @@ public class Keyboard implements Serializable {
 
     private final Map<String, Key> keyPosition;
 
+
     public Keyboard(Map<String, Key> keyPosition) {
         this.keyPosition = keyPosition;
     }
 
+
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        keyPosition.forEach((k, v) ->
-                builder.append(k).append(" ").append(v).append("\n"));
-        return builder.toString();
+        return keyPosition.entrySet()
+                .stream()
+                .map(Map.Entry::toString)
+                .collect(Collectors.joining("\n"));
     }
+
 
     public ObjectiveFunction getObjectiveFunction() {
         return new ObjectiveFunction();
     }
 
+
+    public static class Values {
+
+        final int keyPress;
+        final int handAlternation;
+        final double distance;
+        final double bigStepDistance;
+
+
+        private Values(int keyPress, int handAlternation, double distance, double bigStepDistance) {
+            this.keyPress = keyPress;
+            this.handAlternation = handAlternation;
+            this.distance = distance;
+            this.bigStepDistance = bigStepDistance;
+        }
+
+
+        @Override
+        public String toString() {
+            return "Values{" +
+                    "keyPress=" + keyPress +
+                    ", handAlternation=" + handAlternation +
+                    ", distance=" + distance +
+                    ", bigStepDistance=" + bigStepDistance +
+                    '}';
+        }
+    }
 
     public class ObjectiveFunction {
 
@@ -41,7 +71,7 @@ public class Keyboard implements Serializable {
         double bigStepDistance;
 
 
-        public ObjectiveFunction evalute(CharSequence charSequence) {
+        public ObjectiveFunction evaluate(CharSequence charSequence) {
             keyPress = keyPressCounter(charSequence);
             Key prev = getKey(charSequence.charAt(0));  // avoiding null reference.
 
@@ -120,33 +150,6 @@ public class Keyboard implements Serializable {
             return new Values(keyPress, handAlternation, distance, bigStepDistance);
         }
 
-    }
-
-    public static class Values {
-
-        final int keyPress;
-        final int handAlternation;
-        final double distance;
-        final double bigStepDistance;
-
-
-        private Values(int keyPress, int handAlternation, double distance, double bigStepDistance) {
-            this.keyPress = keyPress;
-            this.handAlternation = handAlternation;
-            this.distance = distance;
-            this.bigStepDistance = bigStepDistance;
-        }
-
-
-        @Override
-        public String toString() {
-            return "Values{" +
-                    "keyPress=" + keyPress +
-                    ", handAlternation=" + handAlternation +
-                    ", distance=" + distance +
-                    ", bigStepDistance=" + bigStepDistance +
-                    '}';
-        }
     }
 
 }

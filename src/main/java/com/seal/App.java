@@ -33,7 +33,7 @@ class Test {
         System.out.println(keyMapBijoy);
 
         Keyboard.Values score = qwerty.getObjectiveFunction()
-                .evalute(keyMapBijoy)
+                .evaluate(keyMapBijoy)
                 .getValues();
 
         System.out.println(score);
