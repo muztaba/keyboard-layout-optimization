@@ -103,26 +103,16 @@ public class Keyboard implements Serializable {
 
 
         private double sameFingerUse(Key prev, Key current) {
-            double dist = 0.0;
-            if (sameHand(prev, current) &&
-                    sameFinger(prev, current)) {
-                dist = prev.getPosition()
-                        .distance(current
-                                .getPosition());
-            }
-            return dist;
+            return (sameHand(prev, current) && sameFinger(prev, current))
+                    ? prev.getPosition().distance(current.getPosition())
+                    : 0.0;
         }
 
 
         private double bigStep(Key prev, Key current) {
-            double dist = 0.0;
-            if (sameHand(prev, current) &&
-                    !sameFinger(prev, current)) {
-                dist = prev.getPosition()
-                        .distance(current
-                                .getPosition());
-            }
-            return dist;
+            return (sameHand(prev, current) && !sameFinger(prev, current))
+                    ? prev.getPosition().distance(current.getPosition())
+                    : 0.0;
         }
 
 
