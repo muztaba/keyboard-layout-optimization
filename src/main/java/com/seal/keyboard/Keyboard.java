@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +33,26 @@ public class Keyboard {
 
     public ObjectiveFunction getObjectiveFunction() {
         return new ObjectiveFunction();
+    }
+
+    public FilterKeyMap getFilterKeyMap() {
+        return new FilterKeyMap();
+    }
+
+    private boolean isModifier(char c) {
+        return c == '+' || c == '-' || c == '=';
+    }
+
+    private boolean sameHand(Key prev, Key current) {
+        return prev.getHand() == current.getHand();
+    }
+
+    private boolean sameFinger(Key prev, Key current) {
+        return prev.getFinger() == current.getFinger();
+    }
+
+    private Key getKey(char c) {
+        return keyPosition.get(String.valueOf(c));
     }
 
     public static class Values implements Serializable {
@@ -63,13 +85,12 @@ public class Keyboard {
 
     public class ObjectiveFunction {
 
+        private final Map<Finger, Finger> fingerMovementMap = new EnumMap<>(Finger.class);
         int keyPress;
         int handAlternation;
         double distance;
         double bigStepDistance;
         int hitDirection;
-
-        private final Map<Finger, Finger> fingerMovementMap = new EnumMap<>(Finger.class);
 
         private ObjectiveFunction() {
             fingerMovementMap.put(Finger.Pinkie, Finger.Ringfinger);
@@ -115,26 +136,34 @@ public class Keyboard {
             return prev.getPosition().distance(current.getPosition());
         }
 
-        private boolean isModifier(char c) {
-            return c == '+' || c == '-' || c == '=';
-        }
-
-        private boolean sameHand(Key prev, Key current) {
-            return prev.getHand() == current.getHand();
-        }
-
-        private boolean sameFinger(Key prev, Key current) {
-            return prev.getFinger() == current.getFinger();
-        }
-
-        private Key getKey(char c) {
-            return keyPosition.get(String.valueOf(c));
-        }
-
         public Values getValues() {
             return new Values(keyPress, handAlternation, distance, bigStepDistance, hitDirection);
         }
 
+    }
+
+    public class FilterKeyMap {
+        private final Predicate<String> filterPredicate = i -> {
+            if (i.length() == 1) return true;
+            if (i.length() == 2) return true;
+
+            Key first = getKey(i.charAt(0)),
+                    second = getKey(i.charAt(2));
+            if (sameHand(first, second))
+                return false;
+            if (sameFinger(first, second))
+                return false;
+
+            return true;
+        };
+
+        public List<String> filter(List<String> list) {
+            return list.stream()
+                    .filter(i -> i.length() <= 3)
+                    .filter(filterPredicate)
+                    .collect(Collectors.toList());
+
+        }
     }
 
 }

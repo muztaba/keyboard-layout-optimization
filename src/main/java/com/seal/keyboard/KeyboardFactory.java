@@ -1,5 +1,6 @@
 package com.seal.keyboard;
 
+import com.seal.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,12 +17,11 @@ public class KeyboardFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(KeyboardFactory.class);
 
-    private Map<String, Key> keyPosition;
-
-    public static Keyboard loadQwert(List<String> list) {
+    public static Keyboard loadQwert(String path) {
         Map<String, Key> keyPosition = new HashMap<>();
 
-        list.stream()
+        FileUtil.lines(path)
+                .stream()
                 .map(i -> i.split(" "))
                 .filter(i -> !keyPosition.containsKey(i[0]))
                 .forEach(i -> {
@@ -38,8 +38,9 @@ public class KeyboardFactory {
         return new Keyboard(keyPosition);
     }
 
-    public static KeyMap<Character, String> loadKeyMap(List<String > list) {
-        Map<Character, String> map = list.stream()
+    public static KeyMap<Character, String> loadKeyMap(String path) {
+        Map<Character, String> map = FileUtil.lines(path)
+                .stream()
                 .map(i -> i.split(" "))
                 .filter(check)
                 .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
