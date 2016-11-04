@@ -78,7 +78,12 @@ public class Keyboard {
             fingerMovementMap.put(Finger.Forefinger, Finger.Pinkie);
         }
 
-        public ObjectiveFunction evaluate(CharSequence charSequence) {
+        public ObjectiveFunction evaluate(String charSequence) {
+            if (charSequence == null || charSequence.isEmpty()) {
+                logger.error("No key map define");
+                return this;
+            }
+
             keyPress = charSequence.length();
             Key prev = getKey(charSequence.charAt(0));
             for (int i = 1; i < charSequence.length(); i++) {
@@ -89,13 +94,11 @@ public class Keyboard {
                 Key current = getKey(c);
                 if (!sameHand(prev, current)) {
                     handAlternation++;
+                } else if (sameFinger(prev, current)) {
+                    distance += fingerDistance(prev, current);
                 } else {
-                    if (sameFinger(prev, current)) {
-                        distance += fingerDistance(prev, current);
-                    } else {
-                        bigStepDistance += fingerDistance(prev, current);
-                        hitDirection += hitDirectionCount(prev, current);
-                    }
+                    bigStepDistance += fingerDistance(prev, current);
+                    hitDirection += hitDirectionCount(prev, current);
                 }
 
                 prev = current;
