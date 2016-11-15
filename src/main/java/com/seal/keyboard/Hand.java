@@ -5,5 +5,15 @@ package com.seal.keyboard;
  */
 public enum Hand {
     Right,
-    Left
+    Left;
+
+    public static Hand hand(String str) {
+        switch (str) {
+            case "r" :
+                return Hand.Right;
+            case "l" :
+                return Hand.Left;
+        }
+        throw new RuntimeException("No Hand Define");
+    }
 }

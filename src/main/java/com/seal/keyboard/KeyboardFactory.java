@@ -19,7 +19,6 @@ public class KeyboardFactory {
 
     public static Keyboard loadQwert(String path) {
         Map<String, Key> keyPosition = new HashMap<>();
-
         FileUtil.lines(path)
                 .stream()
                 .map(i -> i.split(" "))
@@ -29,8 +28,8 @@ public class KeyboardFactory {
                             .setLatter('\0')
                             .setRow(Integer.parseInt(i[1]))
                             .setCol(Integer.parseInt(i[2]))
-                            .setHand(hand(i[3]))
-                            .setFinger(finger(i[4]))
+                            .setHand(Hand.hand(i[3]))
+                            .setFinger(Finger.finger(i[4]))
                             .build();
                     keyPosition.put(i[0], key);
                 });
@@ -56,29 +55,5 @@ public class KeyboardFactory {
             return false;
         }
     };
-
-    private static Hand hand(String str) {
-        switch (str) {
-            case "r" :
-                return Hand.Right;
-            case "l" :
-                return Hand.Left;
-        }
-        throw new RuntimeException("No Hand Define");
-    }
-
-    private static Finger finger(String str) {
-        switch (str) {
-            case "f":
-                return Finger.Forefinger;
-            case "m" :
-                return Finger.MiddleFinger;
-            case "r" :
-                return Finger.Ringfinger;
-            case "p":
-                return Finger.Pinkie;
-        }
-        throw new RuntimeException("No Finger Define");
-    }
 
 }
