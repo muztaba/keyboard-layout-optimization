@@ -9,25 +9,35 @@ import java.io.Serializable;
  */
 public class Key implements Serializable {
 
-    private final char latter;
+    private final char letter;
     private final Point position;
     private final Hand hand;
     private final Finger finger;
 
 
-    private Key(char latter, int row, int col, Hand hand, Finger finger) {
-        this.latter = latter;
+    private Key(char letter, int row, int col, Hand hand, Finger finger) {
+        this.letter = letter;
         position = new Position(row, col);
         this.hand = hand;
         this.finger = finger;
     }
 
-    public static Builder builder() {
+    private static Builder builder() {
         return new Builder();
     }
 
+    public static Key build(String[] str) {
+        return Key.builder()
+                .setLatter(str[0].charAt(0))
+                .setRow(Integer.parseInt(str[1]))
+                .setCol(Integer.parseInt(str[2]))
+                .setHand(Hand.hand(str[3]))
+                .setFinger(Finger.finger(str[4]))
+                .build();
+    }
+
     static class Position extends Point {
-        public Position(int x, int y) {
+        private Position(int x, int y) {
             super(x, y);
         }
 
@@ -38,44 +48,44 @@ public class Key implements Serializable {
         }
     }
 
-    public static class Builder {
+    private static class Builder {
         private char latter;
         private int x, y;
         private Hand hand;
         private Finger finger;
 
-        public Builder setLatter(char latter) {
+        private Builder setLatter(char latter) {
             this.latter = latter;
             return this;
         }
 
-        public Builder setRow(int position) {
+        private Builder setRow(int position) {
             this.x = position;
             return this;
         }
 
-        public Builder setCol(int position) {
+        private Builder setCol(int position) {
             this.y = position;
             return this;
         }
 
-        public Builder setHand(Hand hand) {
+        private Builder setHand(Hand hand) {
             this.hand = hand;
             return this;
         }
 
-        public Builder setFinger(Finger finger) {
+        private Builder setFinger(Finger finger) {
             this.finger = finger;
             return this;
         }
 
-        public Key build() {
+        private Key build() {
             return new Key(latter, x, y, hand, finger);
         }
     }
 
-    public char getLatter() {
-        return latter;
+    public char getLetter() {
+        return letter;
     }
 
     public Point getPosition() {
@@ -93,7 +103,7 @@ public class Key implements Serializable {
     @Override
     public String toString() {
         return "Key{" +
-                "latter=" + latter +
+                "letter=" + letter +
                 ", position=" + position +
                 ", hand=" + hand +
                 ", finger=" + finger +

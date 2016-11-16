@@ -4,9 +4,8 @@ import com.seal.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -16,23 +15,21 @@ import java.util.stream.Collectors;
 public class KeyboardFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(KeyboardFactory.class);
+    private static final Predicate<String[]> check = i -> {
+        if (i.length == 2) {
+            return true;
+        } else {
+            logger.warn("Bad keymap of {}", i[0]);
+            return false;
+        }
+    };
 
     public static Keyboard loadQwert(String path) {
-        Map<String, Key> keyPosition = new HashMap<>();
-        FileUtil.lines(path)
+        Map<Character, Key> keyPosition = FileUtil.lines(path)
                 .stream()
                 .map(i -> i.split(" "))
-                .filter(i -> !keyPosition.containsKey(i[0]))
-                .forEach(i -> {
-                    Key key = Key.builder()
-                            .setLatter('\0')
-                            .setRow(Integer.parseInt(i[1]))
-                            .setCol(Integer.parseInt(i[2]))
-                            .setHand(Hand.hand(i[3]))
-                            .setFinger(Finger.finger(i[4]))
-                            .build();
-                    keyPosition.put(i[0], key);
-                });
+                .map(Key::build)
+                .collect(Collectors.toMap(Key::getLetter, Function.identity()));
 
         return new Keyboard(keyPosition);
     }
@@ -46,14 +43,5 @@ public class KeyboardFactory {
 
         return new KeyMap<>(map);
     }
-
-    private static final Predicate<String[]> check = i -> {
-        if (i.length == 2) {
-            return true;
-        } else {
-            logger.warn("Bad keymap of {}", i[0]);
-            return false;
-        }
-    };
 
 }

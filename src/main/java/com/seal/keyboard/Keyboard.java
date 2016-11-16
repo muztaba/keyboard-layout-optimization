@@ -17,9 +17,9 @@ public class Keyboard {
 
     private static final Logger logger = LoggerFactory.getLogger(Keyboard.class);
 
-    private final Map<String, Key> keyPosition;
+    private final Map<Character, Key> keyPosition;
 
-    public Keyboard(Map<String, Key> keyPosition) {
+    public Keyboard(Map<Character, Key> keyPosition) {
         this.keyPosition = keyPosition;
     }
 
@@ -52,7 +52,7 @@ public class Keyboard {
     }
 
     private Key getKey(char c) {
-        return keyPosition.get(String.valueOf(c));
+        return keyPosition.get(c);
     }
 
     public static class Values implements Serializable {
