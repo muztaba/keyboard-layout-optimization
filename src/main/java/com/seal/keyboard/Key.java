@@ -34,7 +34,7 @@ public class Key implements Serializable {
         @Override
         public double distance(Point2D pt) {
             // Manhattan Distance
-            return Math.abs(getX() - pt.getX()) + Math.abs(getY() - getY());
+            return Math.abs(getX() - pt.getX()) + Math.abs(getY() - pt.getY());
         }
     }
 
