@@ -49,7 +49,7 @@ public class KeyboardFactory {
     public static KeyMap<Character, String> loadKeyMap(String path) throws IOException {
         Map<Character, String> map = null;
         try (Stream<String> stream = getLinesStream(path)) {
-            map = getLinesStream(path)
+            map = stream
                     .map(i -> i.split(" "))
                     .filter(check)
                     .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
