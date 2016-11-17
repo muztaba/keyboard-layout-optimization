@@ -101,7 +101,7 @@ public class Keyboard {
 
         public ObjectiveFunction evaluate(String charSequence) {
             if (charSequence == null || charSequence.isEmpty()) {
-                logger.error("No key map define");
+                logger.error("No string define");
                 return this;
             }
 

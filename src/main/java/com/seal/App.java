@@ -6,7 +6,10 @@ import com.seal.keyboard.Keyboard;
 import com.seal.keyboard.KeyboardFactory;
 import com.seal.util.KeyMapProcessor;
 import com.seal.util.ReadFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,10 +22,26 @@ public class App {
 }
 
 class Test {
+
+    private static final Logger logger = LoggerFactory.getLogger(Test.class);
+
     public void testFileRead() {
 
-        Keyboard qwerty = KeyboardFactory.loadQwert("qwerty.txt");
-        KeyMap<Character, String> keymap = KeyboardFactory.loadKeyMap("bijoy.txt");
+        Keyboard qwerty = null;
+        try {
+            qwerty = KeyboardFactory.loadQwert("qwerty.txt");
+        } catch (IOException e) {
+            logger.error("QWERTY config not found \n {}", e);
+            System.exit(1);
+        }
+
+        KeyMap<Character, String> keymap = null;
+        try {
+            keymap = KeyboardFactory.loadKeyMap("bijoy.txt");
+        } catch (IOException e) {
+            logger.error("No keymap config not found \n {}" , e);
+            System.exit(1);
+        }
 
         ReadFile reader = new ReadFile("text.txt");
         String str = reader.readNextLine(10);
