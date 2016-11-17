@@ -26,21 +26,8 @@ class Test {
 
     public void testFileRead() {
 
-        Keyboard qwerty = null;
-        try {
-            qwerty = KeyboardFactory.loadQwert("qwerty.txt");
-        } catch (IOException e) {
-            logger.error("QWERTY config not found \n {}", e);
-            System.exit(1);
-        }
-
-        KeyMap<Character, String> keymap = null;
-        try {
-            keymap = KeyboardFactory.loadKeyMap("bijoy.txt");
-        } catch (IOException e) {
-            logger.error("No keymap config not found \n {}" , e);
-            System.exit(1);
-        }
+        Keyboard qwerty = getQwerty();
+        KeyMap<Character, String> keymap = getKeymap();
 
         ReadFile reader = new ReadFile("text.txt");
         String str = reader.readNextLine(10);
@@ -55,6 +42,30 @@ class Test {
                 .getValues();
 
         System.out.println(score);
+    }
+
+    public Keyboard getQwerty() {
+
+        Keyboard qwerty = null;
+        try {
+            qwerty = KeyboardFactory.loadQwert("qwerty.txt");
+        } catch (IOException e) {
+            logger.error("QWERTY config not found \n {}", e);
+            System.exit(1);
+        }
+
+        return qwerty;
+    }
+
+    public KeyMap<Character, String> getKeymap() {
+        KeyMap<Character, String> keymap = null;
+        try {
+            keymap = KeyboardFactory.loadKeyMap("bijoy.txt");
+        } catch (IOException e) {
+            logger.error("No keymap config not found \n {}", e);
+            System.exit(1);
+        }
+        return keymap;
     }
 
 }
