@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -32,33 +33,32 @@ public class KeyboardFactory {
     }
 
     public static Keyboard loadQwert(String path) throws IOException {
-        Map<Character, Key> keyPosition = null;
         try (Stream<String> stream = getLinesStream(path)) {
-            keyPosition = stream
+            Map<Character, Key> keyPosition = stream
                     .map(i -> i.split(" "))
                     .map(Key::build)
                     .collect(Collectors.toMap(Key::getLetter, Function.identity()));
+            return new Keyboard(keyPosition);
+
         } catch (IOException e) {
             logger.warn("QWERTY config file not found at {}", path);
             throw e;
         }
 
-        return new Keyboard(keyPosition);
     }
 
     public static KeyMap<Character, String> loadKeyMap(String path) throws IOException {
-        Map<Character, String> map = null;
         try (Stream<String> stream = getLinesStream(path)) {
-            map = getLinesStream(path)
+            Map<Character, String> map = stream
                     .map(i -> i.split(" "))
                     .filter(check)
                     .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
+            return new KeyMap<>(map);
+
         } catch (IOException e) {
             logger.warn("Keymap config file not found at {}", path);
             throw e;
         }
-
-        return new KeyMap<>(map);
     }
 
 }
