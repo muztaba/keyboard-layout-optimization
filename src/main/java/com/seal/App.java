@@ -1,6 +1,5 @@
 package com.seal;
 
-import com.seal.algorithm.KeyCombinationCreator;
 import com.seal.keyboard.KeyMap;
 import com.seal.keyboard.Keyboard;
 import com.seal.keyboard.KeyboardFactory;
@@ -43,11 +42,6 @@ class Test {
                 .getValues();
 
         System.out.println(score);
-        List<String> stringList = KeyCombinationCreator.keyCombinationCreate();
-        stringList = qwerty.getFilterKeyMap()
-                .filter(stringList);
-
-        System.out.println(stringList.size());
     }
 
     public Keyboard getQwerty() {
