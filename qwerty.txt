@@ -37,7 +37,8 @@ l 4 3 r r
 . 4 4 r r
 p 5 2 r p
 ; 5 3 r p
-? 5 4 r p
+/ 5 4 r p
 [ 6 2 r p
-'' 6 3 r p
+' 6 3 r p
 ] 7 2 r p
+\ 7 3 r p
