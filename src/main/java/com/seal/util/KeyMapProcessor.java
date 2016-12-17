@@ -29,7 +29,6 @@ public class KeyMapProcessor {
 
     public KeyMapProcessor setString(String string) {
         this.str = string.chars()
-                .filter(i -> !Character.isSpaceChar(i))
                 .filter(this::isBangla)
                 .mapToObj(this::get)
                 .collect(Collectors.joining());
@@ -37,8 +36,8 @@ public class KeyMapProcessor {
         return this;
     }
 
-    private String get(int  c) {
-        return keyMap.getMap((char)c);
+    private String get(int c) {
+        return keyMap.getMap((char) c);
     }
 
     public String getKeyMap() {
@@ -48,8 +47,9 @@ public class KeyMapProcessor {
 
 
     private boolean isBangla(int codePoint) {
-        return (codePoint >= BANGLA_CHAR_START && codePoint <= BANGLA_CHAR_END) &&
-                (codePoint <= BANGLA_NUMBER_START || codePoint >= BANGLA_NUMBER_END);
+        return ((codePoint >= BANGLA_CHAR_START && codePoint <= BANGLA_CHAR_END) &&
+                (codePoint <= BANGLA_NUMBER_START || codePoint >= BANGLA_NUMBER_END))
+                || codePoint == (int) ' ';
     }
 
 }
