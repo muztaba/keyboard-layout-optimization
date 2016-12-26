@@ -3,7 +3,6 @@ package com.seal.util;
 import com.seal.keyboard.KeyMap;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created by seal on 10/23/16.
@@ -28,10 +27,14 @@ public class KeyMapProcessor {
     }
 
     public KeyMapProcessor setString(String string) {
-        this.str = string.chars()
-                .filter(this::isBangla)
-                .mapToObj(this::get)
-                .collect(Collectors.joining());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : string.toCharArray()) {
+            if (Character.isSpaceChar(c))
+                stringBuilder.append(c);
+            else if (isBangla(c))
+                stringBuilder.append(get(c));
+        }
+        this.str = stringBuilder.toString();
 
         return this;
     }
@@ -45,11 +48,9 @@ public class KeyMapProcessor {
         return str;
     }
 
-
     private boolean isBangla(int codePoint) {
         return ((codePoint >= BANGLA_CHAR_START && codePoint <= BANGLA_CHAR_END) &&
-                (codePoint <= BANGLA_NUMBER_START || codePoint >= BANGLA_NUMBER_END))
-                || codePoint == (int) ' ';
+                (codePoint <= BANGLA_NUMBER_START || codePoint >= BANGLA_NUMBER_END));
     }
 
 }
