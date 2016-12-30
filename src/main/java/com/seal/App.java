@@ -3,13 +3,12 @@ package com.seal;
 import com.seal.keyboard.KeyMap;
 import com.seal.keyboard.Keyboard;
 import com.seal.keyboard.KeyboardFactory;
-import com.seal.util.KeyMapProcessor;
-import com.seal.util.ReadFile;
+import com.seal.keyboard.KeyMapProcessor;
+import com.seal.io.ReadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Hello world!

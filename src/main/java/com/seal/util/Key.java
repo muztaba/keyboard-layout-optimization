@@ -1,4 +1,4 @@
-package com.seal.keyboard;
+package com.seal.util;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

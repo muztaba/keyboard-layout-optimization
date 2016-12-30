@@ -1,5 +1,7 @@
 package com.seal.keyboard;
 
+import com.seal.util.Finger;
+import com.seal.util.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

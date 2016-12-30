@@ -1,4 +1,4 @@
-package com.seal.keyboard;
+package com.seal.util;
 
 /**
  * Created by seal on 10/18/2016.

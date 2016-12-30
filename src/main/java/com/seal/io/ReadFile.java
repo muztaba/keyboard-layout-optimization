@@ -1,4 +1,4 @@
-package com.seal.util;
+package com.seal.io;
 
 import java.io.*;
 import java.nio.file.Files;

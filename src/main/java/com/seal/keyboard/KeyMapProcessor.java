@@ -1,6 +1,4 @@
-package com.seal.util;
-
-import com.seal.keyboard.KeyMap;
+package com.seal.keyboard;
 
 import java.util.Objects;
 
