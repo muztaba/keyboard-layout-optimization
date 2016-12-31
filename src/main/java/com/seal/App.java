@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +38,7 @@ class Test {
         List<Key> macro = keyMapProcessor.setString(str)
                 .getKeyMap();
 
-        macro.stream()
-                .forEach(System.out::println);
+        fileWrite(macro);
 
 
     }
@@ -68,6 +70,21 @@ class Test {
     public String readFile() {
         ReadFile reader = new ReadFile("text.txt"); // need to remove , otherwise read same line repeatedly
         return reader.readNextLine(10);
+    }
+
+    void fileWrite(List<Key> macro) {
+        try {
+            PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get("outputOne.txt")));
+            macro.stream()
+                    .mapToInt(Key::getLetter)
+                    .mapToObj(i -> String.valueOf((char) i))
+                    .forEach(out::print);
+            out.close();
+        } catch (Exception e) {
+
+        }
+
+
     }
 
 }
