@@ -7,7 +7,8 @@ public enum Finger {
     Forefinger,
     MiddleFinger,
     Ringfinger,
-    Pinkie;
+    Pinkie,
+    Thumb;
 
     public static Finger finger(String str) {
         switch (str) {
@@ -19,6 +20,8 @@ public enum Finger {
                 return Finger.Ringfinger;
             case "p":
                 return Finger.Pinkie;
+            case "t":
+                return Finger.Thumb;
         }
         throw new RuntimeException("No Finger Define");
     }
