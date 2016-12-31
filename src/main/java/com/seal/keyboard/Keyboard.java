@@ -42,7 +42,7 @@ public class Keyboard {
     }
 
     private boolean isModifier(char c) {
-        return c == '+' || c == '-' || c == '=';
+        return c == '+' || c == '-' || c == '=' || c == ' ';
     }
 
     private boolean sameHand(Key prev, Key current) {
@@ -107,7 +107,7 @@ public class Keyboard {
                 return this;
             }
 
-            keyPress = charSequence.length();
+            keyPress = calculateKeyPress(charSequence);
             Key prev = getKey(charSequence.charAt(0));
             for (int i = 1; i < charSequence.length(); i++) {
                 char c = charSequence.charAt(i);
@@ -129,6 +129,13 @@ public class Keyboard {
 
             return this;
         }
+
+        private int calculateKeyPress(String str) {
+            // Remove all space from string, then return the length of that string.
+            return str.replaceAll("\\s+", "").length();
+        }
+
+
 
         private int hitDirectionCount(Key prev, Key current) {
             return fingerMovementMap.get(prev.getFinger()) != current.getFinger() ? 1 : 0;

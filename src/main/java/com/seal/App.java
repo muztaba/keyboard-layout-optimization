@@ -1,14 +1,16 @@
 package com.seal;
 
-import com.seal.keyboard.KeyMap;
-import com.seal.keyboard.Keyboard;
-import com.seal.keyboard.KeyboardFactory;
-import com.seal.keyboard.KeyMapProcessor;
 import com.seal.io.ReadFile;
+import com.seal.keyboard.KeyMap;
+import com.seal.keyboard.KeyMapProcessor;
+import com.seal.keyboard.KeyboardFactory;
+import com.seal.util.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -25,27 +27,23 @@ class Test {
 
     public void testFileRead() {
 
-        Keyboard qwerty = getQwerty();
+        Map<Character, Key> qwerty = getQwerty();
         KeyMap<Character, String> keymap = getKeymap();
+        String str = readFile();
 
-        ReadFile reader = new ReadFile("text.txt");
-        String str = reader.readNextLine(10);
-        String keyMapBijoy = KeyMapProcessor.getInstance(keymap)
-                .setString(str)
+        KeyMapProcessor keyMapProcessor = new KeyMapProcessor(keymap, qwerty);
+        List<Key> macro = keyMapProcessor.setString(str)
                 .getKeyMap();
 
-        System.out.println(keyMapBijoy);
+        macro.stream()
+                .forEach(System.out::println);
 
-        Keyboard.Values score = qwerty.getObjectiveFunction()
-                .evaluate(keyMapBijoy)
-                .getValues();
 
-        System.out.println(score);
     }
 
-    public Keyboard getQwerty() {
+    public Map<Character, Key> getQwerty() {
 
-        Keyboard qwerty = null;
+        Map<Character, Key> qwerty = null;
         try {
             qwerty = KeyboardFactory.loadQwert("qwerty.txt");
         } catch (IOException e) {
@@ -65,6 +63,11 @@ class Test {
             System.exit(1);
         }
         return keymap;
+    }
+
+    public String readFile() {
+        ReadFile reader = new ReadFile("text.txt"); // need to remove , otherwise read same line repeatedly
+        return reader.readNextLine(10);
     }
 
 }

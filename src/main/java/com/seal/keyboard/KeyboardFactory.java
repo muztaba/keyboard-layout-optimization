@@ -32,13 +32,13 @@ public class KeyboardFactory {
         return Files.lines(Paths.get(path));
     }
 
-    public static Keyboard loadQwert(String path) throws IOException {
+    public static Map<Character, Key>  loadQwert(String path) throws IOException {
         try (Stream<String> stream = getLinesStream(path)) {
             Map<Character, Key> keyPosition = stream
                     .map(i -> i.split(" "))
                     .map(Key::build)
                     .collect(Collectors.toMap(Key::getLetter, Function.identity()));
-            return new Keyboard(keyPosition);
+            return keyPosition;
 
         } catch (IOException e) {
             logger.warn("QWERTY config file not found at {}", path);
