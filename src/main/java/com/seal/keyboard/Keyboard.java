@@ -41,10 +41,6 @@ public class Keyboard {
         return new FilterKeyMap();
     }
 
-    private boolean isModifier(char c) {
-        return c == '+' || c == '-' || c == '=' || c == ' ';
-    }
-
     private boolean sameHand(Key prev, Key current) {
         return prev.getHand() == current.getHand();
     }
@@ -53,19 +49,15 @@ public class Keyboard {
         return prev.getFinger() == current.getFinger();
     }
 
-    private Key getKey(char c) {
-        return keyPosition.get(c);
-    }
-
     public static class Values implements Serializable {
 
-        final int keyPress;
-        final int handAlternation;
+        final long keyPress;
+        final long handAlternation;
         final double distance;
         final double bigStepDistance;
-        final int hitDirection;
+        final long hitDirection;
 
-        private Values(int keyPress, int handAlternation, double distance, double bigStepDistance, int hitDirection) {
+        private Values(long keyPress, long handAlternation, double distance, double bigStepDistance, long hitDirection) {
             this.keyPress = keyPress;
             this.handAlternation = handAlternation;
             this.distance = distance;
@@ -87,34 +79,28 @@ public class Keyboard {
 
     public class ObjectiveFunction {
 
-        private final Map<Finger, Finger> fingerMovementMap = new EnumMap<>(Finger.class);
-        int keyPress;
-        int handAlternation;
+        private final Map<Finger, Finger> fingerMovementMap = new EnumMap<Finger, Finger>(Finger.class){{
+            put(Finger.Pinkie, Finger.Ringfinger);
+            put(Finger.Ringfinger, Finger.MiddleFinger);
+            put(Finger.MiddleFinger, Finger.Forefinger);
+            put(Finger.Forefinger, Finger.Pinkie);
+        }};
+        long keyPress;
+        long handAlternation;
         double distance;
         double bigStepDistance;
-        int hitDirection;
+        long hitDirection;
 
-        private ObjectiveFunction() {
-            fingerMovementMap.put(Finger.Pinkie, Finger.Ringfinger);
-            fingerMovementMap.put(Finger.Ringfinger, Finger.MiddleFinger);
-            fingerMovementMap.put(Finger.MiddleFinger, Finger.Forefinger);
-            fingerMovementMap.put(Finger.Forefinger, Finger.Pinkie);
-        }
-
-        public ObjectiveFunction evaluate(String charSequence) {
-            if (charSequence == null || charSequence.isEmpty()) {
+        public ObjectiveFunction evaluate(List<Key> macros) {
+            if (macros == null || macros.isEmpty()) {
                 logger.error("No string define");
                 return this;
             }
 
-            keyPress = calculateKeyPress(charSequence);
-            Key prev = getKey(charSequence.charAt(0));
-            for (int i = 1; i < charSequence.length(); i++) {
-                char c = charSequence.charAt(i);
-                if (isModifier(c))
-                    continue;
-
-                Key current = getKey(c);
+            keyPress = calculateKeyPress(macros);
+            Key prev = macros.get(0);
+            for (int i = 1; i < macros.size(); i++) {
+                Key current = macros.get(i);
                 if (!sameHand(prev, current)) {
                     handAlternation++;
                 } else if (sameFinger(prev, current)) {
@@ -130,9 +116,11 @@ public class Keyboard {
             return this;
         }
 
-        private int calculateKeyPress(String str) {
+        private long calculateKeyPress(List<Key> macro) {
             // Remove all space from string, then return the length of that string.
-            return str.replaceAll("\\s+", "").length();
+            return  macro.stream()
+                    .filter(i -> i.getLetter() != ' ')
+                    .count();
         }
 
 
@@ -152,7 +140,7 @@ public class Keyboard {
     }
 
     public class FilterKeyMap {
-        private final Predicate<String> filterPredicate = i -> {
+        /*private final Predicate<String> filterPredicate = i -> {
             if (i.length() == 1) return true;
             if (i.length() == 2) return true;
 
@@ -172,7 +160,7 @@ public class Keyboard {
                     .filter(filterPredicate)
                     .collect(Collectors.toList());
 
-        }
+        }*/
     }
 
 }

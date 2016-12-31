@@ -3,6 +3,7 @@ package com.seal;
 import com.seal.io.ReadFile;
 import com.seal.keyboard.KeyMap;
 import com.seal.keyboard.KeyMapProcessor;
+import com.seal.keyboard.Keyboard;
 import com.seal.keyboard.KeyboardFactory;
 import com.seal.util.Key;
 import org.slf4j.Logger;
@@ -38,9 +39,11 @@ class Test {
         List<Key> macro = keyMapProcessor.setString(str)
                 .getKeyMap();
 
-        fileWrite(macro);
+//        fileWrite(macro);
 
-
+        Keyboard keyboard = new Keyboard(qwerty);
+        keyboard.getObjectiveFunction()
+                .evaluate(macro);
     }
 
     public Map<Character, Key> getQwerty() {
