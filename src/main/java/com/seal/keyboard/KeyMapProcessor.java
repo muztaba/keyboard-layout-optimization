@@ -4,10 +4,7 @@ import com.seal.util.Bangla;
 import com.seal.util.Key;
 import com.seal.util.SpacialKeyFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by seal on 10/23/16.
@@ -80,7 +77,7 @@ public class KeyMapProcessor {
 
     public List<Key> getKeyMap() {
         Objects.requireNonNull(macroList, "String is not set");
-        return macroList;
+        return Collections.unmodifiableList(this.macroList);
     }
 
     private boolean isModifier(char c) {
