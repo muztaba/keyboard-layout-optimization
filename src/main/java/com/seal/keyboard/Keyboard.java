@@ -116,6 +116,10 @@ public class Keyboard {
             return this;
         }
 
+        private void loadCalculation(Key key) {
+
+        }
+
         private long calculateKeyPress(List<Key> macro) {
             // Remove all space from string, then return the length of that string.
             return  macro.stream()
