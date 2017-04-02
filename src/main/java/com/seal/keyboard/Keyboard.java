@@ -1,5 +1,6 @@
 package com.seal.keyboard;
 
+import com.seal.util.BigStepCoefficient;
 import com.seal.util.Finger;
 import com.seal.util.Key;
 import org.slf4j.Logger;
@@ -9,7 +10,6 @@ import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -106,7 +106,7 @@ public class Keyboard {
                 } else if (sameFinger(prev, current)) {
                     distance += fingerDistance(prev, current);
                 } else {
-                    bigStepDistance += fingerDistance(prev, current);
+                    bigStepDistance += bigStep(prev, current);
                     hitDirection += hitDirectionCount(prev, current);
                 }
 
@@ -135,6 +135,10 @@ public class Keyboard {
 
         private double fingerDistance(Key prev, Key current) {
             return prev.getPosition().distance(current.getPosition());
+        }
+
+        private double bigStep(Key prev, Key current) {
+            return BigStepCoefficient.getCoefficient(prev.getFinger(), current.getFinger());
         }
 
         public Values getValues() {
