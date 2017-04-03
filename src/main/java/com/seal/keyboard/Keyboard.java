@@ -3,6 +3,7 @@ package com.seal.keyboard;
 import com.seal.util.BigStepCoefficient;
 import com.seal.util.Finger;
 import com.seal.util.Key;
+import com.seal.util.dto.ObjectiveFunctionsValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,34 +50,6 @@ public class Keyboard {
         return prev.getFinger() == current.getFinger();
     }
 
-    public static class Values implements Serializable {
-
-        final long keyPress;
-        final long handAlternation;
-        final double distance;
-        final double bigStepDistance;
-        final long hitDirection;
-
-        private Values(long keyPress, long handAlternation, double distance, double bigStepDistance, long hitDirection) {
-            this.keyPress = keyPress;
-            this.handAlternation = handAlternation;
-            this.distance = distance;
-            this.bigStepDistance = bigStepDistance;
-            this.hitDirection = hitDirection;
-        }
-
-        @Override
-        public String toString() {
-            return "Values{" +
-                    "keyPress=" + keyPress +
-                    ", handAlternation=" + handAlternation +
-                    ", distance=" + distance +
-                    ", bigStepDistance=" + bigStepDistance +
-                    ", hitDirection=" + hitDirection +
-                    '}';
-        }
-    }
-
     public class ObjectiveFunction {
 
         private final Map<Finger, Finger> fingerMovementMap = new EnumMap<Finger, Finger>(Finger.class){{
@@ -85,17 +58,18 @@ public class Keyboard {
             put(Finger.MiddleFinger, Finger.Forefinger);
             put(Finger.Forefinger, Finger.Pinkie);
         }};
-        long keyPress;
-        long handAlternation;
-        double distance;
-        double bigStepDistance;
-        long hitDirection;
 
-        public ObjectiveFunction evaluate(List<Key> macros) {
+
+        public ObjectiveFunctionsValues evaluate(List<Key> macros) {
             if (macros == null || macros.isEmpty()) {
                 logger.error("No string define");
-                return this;
+                return ObjectiveFunctionsValues.builder().build();
             }
+
+            long keyPress, handAlternation ,hitDirection ;
+            double distance, bigStepDistance;
+            keyPress = handAlternation = hitDirection = 0L;
+            distance = bigStepDistance = 0.0;
 
             keyPress = calculateKeyPress(macros);
             Key prev = macros.get(0);
@@ -113,7 +87,13 @@ public class Keyboard {
                 prev = current;
             }
 
-            return this;
+            return ObjectiveFunctionsValues.builder()
+                    .setKeyPress(keyPress)
+                    .setHandAlternation(handAlternation)
+                    .setHitDirection(hitDirection)
+                    .setDistance(distance)
+                    .setBigStepDistance(bigStepDistance)
+                    .build();
         }
 
         private void loadCalculation(Key key) {
@@ -139,10 +119,6 @@ public class Keyboard {
 
         private double bigStep(Key prev, Key current) {
             return BigStepCoefficient.getCoefficient(prev.getFinger(), current.getFinger());
-        }
-
-        public Values getValues() {
-            return new Values(keyPress, handAlternation, distance, bigStepDistance, hitDirection);
         }
 
     }
