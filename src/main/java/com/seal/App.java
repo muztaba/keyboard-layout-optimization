@@ -39,11 +39,12 @@ class Test {
         List<Key> macro = keyMapProcessor.setString(str)
                 .getKeyMap();
 
-//        fileWrite(macro);
+        fileWrite(macro);
+        System.out.println(">>>>>>>>>>>>>");
 
         Keyboard keyboard = new Keyboard(qwerty);
-        keyboard.getObjectiveFunction()
-                .evaluate(macro);
+        System.out.println(keyboard.getObjectiveFunction()
+                .evaluate(macro));
     }
 
     public Map<Character, Key> getQwerty() {
@@ -62,7 +63,7 @@ class Test {
     public KeyMap<Character, String> getKeymap() {
         KeyMap<Character, String> keymap = null;
         try {
-            keymap = KeyboardFactory.loadKeyMap("bijoy.txt");
+            keymap = KeyboardFactory.loadKeyMap("provat.txt");
         } catch (IOException e) {
             logger.error("No keymap config not found \n {}", e);
             System.exit(1);

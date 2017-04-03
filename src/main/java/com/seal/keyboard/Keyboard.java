@@ -1,14 +1,11 @@
 package com.seal.keyboard;
 
-import com.seal.util.BigStepCoefficient;
-import com.seal.util.Finger;
+import com.seal.util.StaticUtil;
 import com.seal.util.Key;
 import com.seal.util.dto.ObjectiveFunctionsValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,14 +49,6 @@ public class Keyboard {
 
     public class ObjectiveFunction {
 
-        private final Map<Finger, Finger> fingerMovementMap = new EnumMap<Finger, Finger>(Finger.class){{
-            put(Finger.Pinkie, Finger.Ringfinger);
-            put(Finger.Ringfinger, Finger.MiddleFinger);
-            put(Finger.MiddleFinger, Finger.Forefinger);
-            put(Finger.Forefinger, Finger.Pinkie);
-        }};
-
-
         public ObjectiveFunctionsValues evaluate(List<Key> macros) {
             if (macros == null || macros.isEmpty()) {
                 logger.error("No string define");
@@ -67,10 +56,8 @@ public class Keyboard {
             }
 
             // Declaration and Initialization
-            long keyPress, handAlternation ,hitDirection ;
-            double distance, bigStepDistance;
-            keyPress = handAlternation = hitDirection = 0L;
-            distance = bigStepDistance = 0.0;
+            long keyPress = 0, handAlternation = 0 ,hitDirection = 0;
+            double distance = 0.0, bigStepDistance = 0.0;
 
             // Objective Function Calculation
             keyPress = calculateKeyPress(macros);
@@ -113,7 +100,7 @@ public class Keyboard {
 
 
         private int hitDirectionCount(Key prev, Key current) {
-            return fingerMovementMap.get(prev.getFinger()) != current.getFinger() ? 1 : 0;
+            return StaticUtil.nextFinger(prev.getFinger()) != current.getFinger() ? 1 : 0;
         }
 
         private double fingerDistance(Key prev, Key current) {
@@ -121,7 +108,7 @@ public class Keyboard {
         }
 
         private double bigStep(Key prev, Key current) {
-            return BigStepCoefficient.getCoefficient(prev.getFinger(), current.getFinger());
+            return StaticUtil.getCoefficient(prev.getFinger(), current.getFinger());
         }
 
     }
