@@ -66,11 +66,13 @@ public class Keyboard {
                 return ObjectiveFunctionsValues.builder().build();
             }
 
+            // Declaration and Initialization
             long keyPress, handAlternation ,hitDirection ;
             double distance, bigStepDistance;
             keyPress = handAlternation = hitDirection = 0L;
             distance = bigStepDistance = 0.0;
 
+            // Objective Function Calculation
             keyPress = calculateKeyPress(macros);
             Key prev = macros.get(0);
             for (int i = 1; i < macros.size(); i++) {
@@ -87,6 +89,7 @@ public class Keyboard {
                 prev = current;
             }
 
+            // Return the Result for Given Macros
             return ObjectiveFunctionsValues.builder()
                     .setKeyPress(keyPress)
                     .setHandAlternation(handAlternation)
