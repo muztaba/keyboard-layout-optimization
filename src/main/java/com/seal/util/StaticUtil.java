@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class StaticUtil {
 
-    private static final Map<Finger, Finger> fingerMovementMap = new EnumMap<Finger, Finger>(Finger.class){{
+    private static final Map<Finger, Finger> fingerMovementMap = new EnumMap<Finger, Finger>(Finger.class) {{
         put(Finger.Pinkie, Finger.Ringfinger);
         put(Finger.Ringfinger, Finger.MiddleFinger);
         put(Finger.MiddleFinger, Finger.Forefinger);
@@ -31,6 +31,10 @@ public class StaticUtil {
             {0, 6, 7, 10, 0}
     };
 
+    // Ideal Load Distribution
+    private static final double[] row = {15.38, 10.26, 15.38, 23.08, 17.95, 6.41, 5.13, 3.85, 2.56};
+    private static final double[] column = {10.87, 13.04, 15.22, 43.48, 10.87, 6.52};
+
     public static double getCoefficient(Finger u, Finger v) {
         int i = map.get(u);
         int j = map.get(v);
@@ -39,5 +43,13 @@ public class StaticUtil {
 
     public static Finger nextFinger(Finger finger) {
         return fingerMovementMap.get(finger);
+    }
+
+    public static double getRow(int x) {
+        return row[x];
+    }
+
+    public static double getCol(int y) {
+        return column[y];
     }
 }

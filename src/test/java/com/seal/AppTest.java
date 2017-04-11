@@ -1,5 +1,7 @@
 package com.seal;
 
+import com.seal.util.Key;
+import com.seal.util.StaticUtil;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -33,6 +35,11 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        Key key = Key.build(new String[]{"f", "2", "3", "l", "f"});
+        double row = StaticUtil.getRow(key.getPosition().x) / 100.0;
+        double col = StaticUtil.getCol(key.getPosition().y) / 100.0;
+
+
+        System.out.println(30 * row * col * 0.50);
     }
 }

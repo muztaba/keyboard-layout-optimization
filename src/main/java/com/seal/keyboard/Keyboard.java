@@ -1,13 +1,14 @@
 package com.seal.keyboard;
 
-import com.seal.util.StaticUtil;
 import com.seal.util.Key;
+import com.seal.util.StaticUtil;
 import com.seal.util.dto.ObjectiveFunctionsValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -56,10 +57,10 @@ public class Keyboard {
             }
 
             // Declaration and Initialization
-            long keyPress = 0, handAlternation = 0 ,hitDirection = 0;
-            double distance = 0.0, bigStepDistance = 0.0;
-
+            long keyPress = 0, handAlternation = 0, hitDirection = 0;
+            double distance = 0.0, bigStepDistance = 0.0, load = 0.0;
             // Objective Function Calculation
+            load = loadCalculation(macros);
             keyPress = calculateKeyPress(macros);
             Key prev = macros.get(0);
             for (int i = 1; i < macros.size(); i++) {
@@ -78,6 +79,7 @@ public class Keyboard {
 
             // Return the Result for Given Macros
             return ObjectiveFunctionsValues.builder()
+                    .setLoad(load)
                     .setKeyPress(keyPress)
                     .setHandAlternation(handAlternation)
                     .setHitDirection(hitDirection)
@@ -86,17 +88,36 @@ public class Keyboard {
                     .build();
         }
 
-        private void loadCalculation(Key key) {
+        private double loadCalculation(List<Key> macros) {
+            // frequency of monograph
+            Map<Key, Long> f = macros.stream()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            Map<Key, Double> optFrequency = f.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                            i ->
+                                    i.getValue()
+                                            * StaticUtil.getRow(i.getKey().getPosition().x) / 100.0
+                                            * StaticUtil.getCol(i.getKey().getPosition().y) / 100.0
+                                            * 0.50
+                    ));
+
+            double v = f.entrySet()
+                    .stream()
+                    .mapToDouble(i -> Math.pow(i.getValue() - optFrequency.get(i.getKey()), 2))
+                    .sum();
+
+            return v;
 
         }
 
         private long calculateKeyPress(List<Key> macro) {
             // Remove all space from string, then return the length of that string.
-            return  macro.stream()
+            return macro.stream()
                     .filter(i -> i.getLetter() != ' ')
                     .count();
         }
-
 
 
         private int hitDirectionCount(Key prev, Key current) {
