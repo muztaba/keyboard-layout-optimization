@@ -90,10 +90,11 @@ public class Keyboard {
 
         private double loadCalculation(List<Key> macros) {
             // frequency of monograph
-            Map<Key, Long> f = macros.stream()
+            Map<Key, Long> frequencyOfMonoGraph = macros.stream()
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-            Map<Key, Double> optFrequency = f.entrySet()
+            // calculate optimal load distribution
+            Map<Key, Double> optLoadDistribution = frequencyOfMonoGraph.entrySet()
                     .stream()
                     .collect(Collectors.toMap(Map.Entry::getKey,
                             i ->
@@ -103,13 +104,11 @@ public class Keyboard {
                                             * 0.50
                     ));
 
-            double v = f.entrySet()
+            // return load distribution of that particular keyboard layout
+            return frequencyOfMonoGraph.entrySet()
                     .stream()
-                    .mapToDouble(i -> Math.pow(i.getValue() - optFrequency.get(i.getKey()), 2))
+                    .mapToDouble(i -> Math.pow(i.getValue() - optLoadDistribution.get(i.getKey()), 2))
                     .sum();
-
-            return v;
-
         }
 
         private long calculateKeyPress(List<Key> macro) {
