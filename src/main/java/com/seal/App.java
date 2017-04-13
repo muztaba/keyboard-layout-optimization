@@ -1,10 +1,11 @@
 package com.seal;
 
+import com.seal.io.IO;
 import com.seal.io.ReadFile;
+import com.seal.keyboard.Init;
 import com.seal.keyboard.KeyMap;
 import com.seal.keyboard.KeyMapProcessor;
 import com.seal.keyboard.Keyboard;
-import com.seal.keyboard.KeyboardFactory;
 import com.seal.util.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +37,8 @@ class Test {
 
     public void testFileRead() {
 
-        Map<Character, Key> qwerty = getQwerty();
-        KeyMap<Character, String> keymap = getKeymap();
+        Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
+        KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf("provat.txt"));
         String str = readFile();
 
         KeyMapProcessor keyMapProcessor = new KeyMapProcessor(keymap, qwerty);
@@ -50,30 +51,6 @@ class Test {
         Keyboard keyboard = new Keyboard(qwerty);
         System.out.println(keyboard.getObjectiveFunction()
                 .evaluate(macro));
-    }
-
-    public Map<Character, Key> getQwerty() {
-
-        Map<Character, Key> qwerty = null;
-        try {
-            qwerty = KeyboardFactory.loadQwert("qwerty.txt");
-        } catch (IOException e) {
-            logger.error("QWERTY config not found \n {}", e);
-            System.exit(1);
-        }
-
-        return qwerty;
-    }
-
-    public KeyMap<Character, String> getKeymap() {
-        KeyMap<Character, String> keymap = null;
-        try {
-            keymap = KeyboardFactory.loadKeyMap("provat.txt");
-        } catch (IOException e) {
-            logger.error("No keymap config not found \n {}", e);
-            System.exit(1);
-        }
-        return keymap;
     }
 
     public String readFile() {
