@@ -28,7 +28,7 @@ public class IO {
 
     public static List<String> listOfFilesName(String directory) {
         try {
-            return Files.list(Paths.get("keyboards"))
+            return Files.list(Paths.get(directory))
                     .map(String::valueOf)
                     .collect(Collectors.toList());
         } catch (IOException e) {
