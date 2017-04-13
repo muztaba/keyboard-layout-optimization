@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -16,12 +18,22 @@ public class IO {
     private static final Logger logger = LoggerFactory.getLogger(IO.class);
 
     public static Stream<String> streamOf(String path) {
-         try {
-             return getLinesStream(path);
-         } catch (IOException e) {
-             logger.warn("File Not Found at path {}", path);
-             throw new RuntimeException(e);
-         }
+        try {
+            return getLinesStream(path);
+        } catch (IOException e) {
+            logger.warn("File Not Found at path {}", path);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<String> listOfFilesName(String directory) {
+        try {
+            return Files.list(Paths.get("keyboards"))
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static Stream<String> getLinesStream(String path) throws IOException {

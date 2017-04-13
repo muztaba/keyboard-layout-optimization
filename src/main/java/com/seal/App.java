@@ -10,7 +10,6 @@ import com.seal.util.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +21,7 @@ import java.util.Map;
  */
 public class App {
     public static void main(String[] args) {
-        new Test().testFileRead();
+        new Test().synchronousOperation();
     }
 }
 
@@ -35,18 +34,27 @@ class Test {
      * [not done yet]
      */
 
-    public void testFileRead() {
-
+    public void synchronousOperation() {
         Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
-        KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf("keyboards\\provat.txt"));
+        List<String> keyboards = IO.listOfFilesName("keyboards");
         String str = readFile();
 
+
+        for (String fileName : keyboards) {
+            System.out.println(fileName.split("\\\\")[1]);
+            KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
+            objectiveFunction(qwerty, keymap, str);
+            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>");
+        }
+
+    }
+
+    public void objectiveFunction(Map<Character, Key> qwerty, KeyMap<Character, String> keymap, String str) {
         KeyMapProcessor keyMapProcessor = new KeyMapProcessor(keymap, qwerty);
         List<Key> macro = keyMapProcessor.setString(str)
                 .getKeyMap();
 
         fileWrite(macro);
-        System.out.println(">>>>>>>>>>>>>");
 
         Keyboard keyboard = new Keyboard(qwerty);
         System.out.println(keyboard.getObjectiveFunction()
