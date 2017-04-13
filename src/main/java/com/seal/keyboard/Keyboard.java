@@ -50,16 +50,15 @@ public class Keyboard {
 
     public class ObjectiveFunction {
 
-        public ObjectiveFunctionsValues evaluate(List<Key> macros) {
+        public ObjectiveFunctionsValues evaluate(final List<Key> macros) {
             if (macros == null || macros.isEmpty()) {
                 logger.error("No string define");
                 return ObjectiveFunctionsValues.builder().build();
             }
 
-            // Declaration and Initialization
             long keyPress = 0, handAlternation = 0, hitDirection = 0;
             double distance = 0.0, bigStepDistance = 0.0, load = 0.0;
-            // Objective Function Calculation
+
             load = loadCalculation(macros);
             keyPress = calculateKeyPress(macros);
             Key prev = macros.get(0);
@@ -77,7 +76,6 @@ public class Keyboard {
                 prev = current;
             }
 
-            // Return the Result for Given Macros
             return ObjectiveFunctionsValues.builder()
                     .setLoad(load)
                     .setKeyPress(keyPress)
@@ -89,12 +87,10 @@ public class Keyboard {
         }
 
         private double loadCalculation(List<Key> macros) {
-            // frequency of monograph
             Map<Key, Long> frequencyOfMonoGraph = macros.stream()
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-            // calculate optimal load distribution
-            Map<Key, Double> optLoadDistribution = frequencyOfMonoGraph.entrySet()
+            Map<Key, Double> optimalLoadDistribution = frequencyOfMonoGraph.entrySet()
                     .stream()
                     .collect(Collectors.toMap(Map.Entry::getKey,
                             i ->
@@ -104,15 +100,13 @@ public class Keyboard {
                                             * 0.50
                     ));
 
-            // return load distribution of that particular keyboard layout
             return frequencyOfMonoGraph.entrySet()
                     .stream()
-                    .mapToDouble(i -> Math.pow(i.getValue() - optLoadDistribution.get(i.getKey()), 2))
+                    .mapToDouble(i -> Math.pow(i.getValue() - optimalLoadDistribution.get(i.getKey()), 2))
                     .sum();
         }
 
         private long calculateKeyPress(List<Key> macro) {
-            // Remove all space from string, then return the length of that string.
             return macro.stream()
                     .filter(i -> i.getLetter() != ' ')
                     .count();
