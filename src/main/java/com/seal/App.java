@@ -38,7 +38,7 @@ class Test {
     public void testFileRead() {
 
         Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
-        KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf("provat.txt"));
+        KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf("keyboards\\provat.txt"));
         String str = readFile();
 
         KeyMapProcessor keyMapProcessor = new KeyMapProcessor(keymap, qwerty);
