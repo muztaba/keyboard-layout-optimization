@@ -25,7 +25,7 @@ public class ObjectiveFunctionsValues {
     }
 
     //--------------- Global Score ---------------//
-    public double globarScore(ObjectiveFunctionsValues refKeyboard) {
+    public double globalScore(ObjectiveFunctionsValues refKeyboard) {
         if (Objects.isNull(refKeyboard)) {
             throw new RuntimeException("Ref Keyboard is Null");
         }

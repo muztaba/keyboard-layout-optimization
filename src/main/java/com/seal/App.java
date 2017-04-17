@@ -47,7 +47,7 @@ class Test {
             System.out.println(fileName.split("\\\\")[1]);
             KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
             ObjectiveFunctionsValues values = objectiveFunction(qwerty, keymap, str);
-            double globalScore = values.globarScore(refValues);
+            double globalScore = values.globalScore(refValues);
             System.out.println("GlobalScore : " + globalScore);
             System.out.println("\n>>>>>>>>>>>>>>>>>>>>>");
         }
