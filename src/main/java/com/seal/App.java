@@ -2,11 +2,9 @@ package com.seal;
 
 import com.seal.io.IO;
 import com.seal.io.ReadFile;
-import com.seal.keyboard.Init;
-import com.seal.keyboard.KeyMap;
-import com.seal.keyboard.KeyMapProcessor;
-import com.seal.keyboard.Keyboard;
+import com.seal.keyboard.*;
 import com.seal.util.Key;
+import com.seal.util.dto.ObjectiveFunctionsValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Hello world!
@@ -39,17 +38,32 @@ class Test {
         List<String> keyboards = IO.listOfFilesName("keyboards");
         String str = readFile();
 
+        String ref = refKeyboardName(keyboards);
+        KeyMap<Character, String> refKeymap = Init.loadKeyMap(IO.streamOf(ref));
+        ObjectiveFunctionsValues refValues = objectiveFunction(qwerty, refKeymap, str);
+        keyboards.removeIf(i -> i.contains("-ref"));
 
         for (String fileName : keyboards) {
             System.out.println(fileName.split("\\\\")[1]);
             KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
-            objectiveFunction(qwerty, keymap, str);
+            ObjectiveFunctionsValues values = objectiveFunction(qwerty, keymap, str);
+            double globalScore = values.globarScore(refValues);
+            System.out.println("GlobalScore : " + globalScore);
             System.out.println("\n>>>>>>>>>>>>>>>>>>>>>");
         }
 
     }
 
-    public void objectiveFunction(Map<Character, Key> qwerty, KeyMap<Character, String> keymap, String str) {
+    public String refKeyboardName(List<String> fileName) {
+        Optional<String> ref = fileName.stream()
+                .filter(i -> i.contains("-ref"))
+                .findFirst();
+
+        if (ref.isPresent()) return ref.get();
+        else throw new RuntimeException("No Reference Keyboard Found");
+    }
+
+    public ObjectiveFunctionsValues objectiveFunction(Map<Character, Key> qwerty, KeyMap<Character, String> keymap, String str) {
         KeyMapProcessor keyMapProcessor = new KeyMapProcessor(keymap, qwerty);
         List<Key> macro = keyMapProcessor.setString(str)
                 .getKeyMap();
@@ -57,8 +71,9 @@ class Test {
         fileWrite(macro);
 
         Keyboard keyboard = new Keyboard(qwerty);
-        System.out.println(keyboard.getObjectiveFunction()
-                .evaluate(macro));
+        return keyboard
+                .getObjectiveFunction()
+                .evaluate(macro);
     }
 
     public String readFile() {
