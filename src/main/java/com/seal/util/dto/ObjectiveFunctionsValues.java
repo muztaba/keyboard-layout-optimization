@@ -1,5 +1,9 @@
 package com.seal.util.dto;
 
+import com.seal.util.StaticUtil;
+
+import java.util.Objects;
+
 /**
  * Created by seal on 4/4/2017.
  */
@@ -20,6 +24,22 @@ public class ObjectiveFunctionsValues {
         this.hitDirection = hitDirection;
     }
 
+    //--------------- Global Score ---------------//
+    public double globarScore(ObjectiveFunctionsValues refKeyboard) {
+        if (Objects.isNull(refKeyboard)) {
+            throw new RuntimeException("Ref Keyboard is Null");
+        }
+        double load = (this.load * StaticUtil.WeightCoefficients.Load_And_Accessibility.getCoefficient()) / refKeyboard.load;
+        double keyPress = (this.keyPress * StaticUtil.WeightCoefficients.Key_Number.getCoefficient()) / refKeyboard.keyPress;
+        double handAlternation = (this.handAlternation * StaticUtil.WeightCoefficients.Hand_Alternation.getCoefficient()) / refKeyboard.handAlternation;
+        double distance = (this.distance * StaticUtil.WeightCoefficients.Consecutive_Usage_Of_Same_Finger.getCoefficient()) / refKeyboard.distance;
+        double bigStepDistance = (this.bigStepDistance * StaticUtil.WeightCoefficients.Avoid_Steps.getCoefficient()) / refKeyboard.bigStepDistance;
+        double hitDirection = (this.hitDirection * StaticUtil.WeightCoefficients.Hit_Direction.getCoefficient()) / refKeyboard.hitDirection;
+
+        return load + keyPress + handAlternation + distance + bigStepDistance + hitDirection;
+    }
+
+
     //--------------- toString---------------//
 
     @Override
@@ -38,12 +58,12 @@ public class ObjectiveFunctionsValues {
     //--------------- Builder ---------------//
 
     public static class Builder {
-        double load;
-        long keyPress;
-        long handAlternation;
-        double distance;
-        double bigStepDistance;
-        long hitDirection;
+        private double load;
+        private long keyPress;
+        private long handAlternation;
+        private double distance;
+        private double bigStepDistance;
+        private long hitDirection;
 
         public Builder setLoad(double load) {
             this.load = load;

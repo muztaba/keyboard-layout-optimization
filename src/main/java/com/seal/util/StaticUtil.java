@@ -35,6 +35,25 @@ public class StaticUtil {
     private static final double[] row = {15.38, 10.26, 15.38, 23.08, 17.95, 6.41, 5.13, 3.85, 2.56};
     private static final double[] column = {10.87, 13.04, 15.22, 43.48, 10.87, 6.52};
 
+    public enum WeightCoefficients {
+        Load_And_Accessibility(.45),
+        Key_Number(.5),
+        Hand_Alternation(1.0),
+        Consecutive_Usage_Of_Same_Finger(0.8),
+        Avoid_Steps(0.7),
+        Hit_Direction(0.6);
+
+        private double coefficient;
+
+        WeightCoefficients(double coefficient) {
+            this.coefficient = coefficient;
+        }
+
+        public double getCoefficient() {
+            return this.coefficient;
+        }
+    }
+
     public static double getCoefficient(Finger u, Finger v) {
         int i = map.get(u);
         int j = map.get(v);
