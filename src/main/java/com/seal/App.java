@@ -70,10 +70,8 @@ class Test {
 
         fileWrite(macro);
 
-        Keyboard keyboard = new Keyboard(qwerty);
-        return keyboard
-                .getObjectiveFunction()
-                .evaluate(macro);
+        Keyboard keyboard = Keyboard.getInstance(qwerty);
+        return keyboard.evaluate(macro);
     }
 
     public String readFile() {
