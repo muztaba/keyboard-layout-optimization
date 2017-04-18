@@ -41,6 +41,8 @@ class Test {
         String ref = refKeyboardName(keyboards);
         KeyMap<Character, String> refKeymap = Init.loadKeyMap(IO.streamOf(ref));
         ObjectiveFunctionsValues refValues = objectiveFunction(qwerty, refKeymap, str);
+        System.out.println(ref + " \n" +refValues);
+        System.out.println("\n>>>>>>>>>>>>>>>>>>>>>\n");
         keyboards.removeIf(i -> i.contains("-ref"));
 
         for (String fileName : keyboards) {
@@ -48,8 +50,9 @@ class Test {
             KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
             ObjectiveFunctionsValues values = objectiveFunction(qwerty, keymap, str);
             double globalScore = values.globalScore(refValues);
+            System.out.println(values);
             System.out.println("GlobalScore : " + globalScore);
-            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>\n");
         }
 
     }
