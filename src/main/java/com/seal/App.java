@@ -64,8 +64,8 @@ class Test {
     }
 
     public ObjectiveFunctionsValues objectiveFunction(Map<Character, Key> qwerty, KeyMap<Character, String> keymap, String str) {
-        KeyMapProcessor keyMapProcessor = new KeyMapProcessor(keymap, qwerty);
-        List<Key> macro = keyMapProcessor.setString(str)
+        List<Key> macro = KeyMapProcessor.load(keymap, qwerty)
+                .setString(str)
                 .getKeyMap();
 
         fileWrite(macro);

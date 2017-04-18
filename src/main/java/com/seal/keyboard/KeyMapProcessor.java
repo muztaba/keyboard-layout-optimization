@@ -22,6 +22,10 @@ public class KeyMapProcessor {
         this.keyPosition = keyPosition;
     }
 
+    public static KeyMapProcessor load(KeyMap<Character, String> keyMap, Map<Character, Key> keyPosition) {
+        return new KeyMapProcessor(keyMap, keyPosition);
+    }
+
     public KeyMapProcessor setString(String string) {
         macroList = new ArrayList<>(string.length());
 
