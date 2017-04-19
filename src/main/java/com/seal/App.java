@@ -28,11 +28,6 @@ class Test {
 
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
-    /**
-     * Objective functions value should be minimize or maximized accordingly Problem statement
-     * [not done yet]
-     */
-
     public void synchronousOperation() {
         Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
         List<String> keyboards = IO.listOfFilesName("keyboards");

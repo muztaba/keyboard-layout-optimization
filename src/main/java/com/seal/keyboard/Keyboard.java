@@ -80,15 +80,16 @@ public final class Keyboard {
         Key prev = macros.get(0);
         for (int i = 1; i < macros.size(); i++) {
             Key current = macros.get(i);
-            if (!sameHand(prev, current)) {
+            if (sameHand(prev, current)) {
                 handAlternation++;
-            } else if (sameFinger(prev, current)) {
-                distance += fingerDistance(prev, current);
-            } else {
-                bigStepDistance += bigStep(prev, current);
+
+                if (sameFinger(prev, current))
+                    distance += fingerDistance(prev, current);
+                else
+                    bigStepDistance += bigStep(prev, current);
+
                 hitDirection += hitDirectionCount(prev, current);
             }
-
             prev = current;
         }
 
