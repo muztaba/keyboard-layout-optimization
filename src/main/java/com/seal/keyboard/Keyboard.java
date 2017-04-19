@@ -53,6 +53,17 @@ public final class Keyboard {
         return instance;
     }
 
+    public static Keyboard getInstance() {
+        if (Objects.isNull(instance)) {
+            synchronized (Keyboard.class) {
+                if (Objects.isNull(instance))
+                    throw new IllegalStateException("This class not yet Initialized." +
+                                                        "Provide initialization parameter.");
+            }
+        }
+        return instance;
+    }
+
 
 
     public ObjectiveFunctionsValues evaluate(final List<Key> macros) {
