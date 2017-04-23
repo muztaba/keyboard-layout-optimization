@@ -85,7 +85,7 @@ public class KeyMapProcessor {
     }
 
     private boolean isModifier(char c) {
-        return c == '+' || c == '-' || c == '=';
+        return c == '+';
     }
 
     private boolean isBangla(int codePoint) {
