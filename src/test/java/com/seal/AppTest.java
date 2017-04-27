@@ -55,7 +55,7 @@ public class AppTest
     Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
     KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf("keyboards/jatiya.txt"));
 
-    public static final String str = "দাবিও";
+    public static final String str = "উপদ্বীপে";
 
 
     public void testKeyMapProcessor()
