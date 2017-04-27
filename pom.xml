@@ -13,6 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j>1.7.21</slf4j>
+    <neo4j>2.1.1</neo4j>
   </properties>
 
   <dependencies>
@@ -22,6 +23,7 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
     <!--Logging-->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -32,6 +34,22 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j}</version>
+    </dependency>
+
+    <!--Neo4j-->
+    <dependency>
+      <groupId>org.neo4j</groupId>
+      <artifactId>neo4j-ogm-core</artifactId>
+      <version>${neo4j}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- Neo4j HTTP driver -->
+    <dependency>
+      <groupId>org.neo4j</groupId>
+      <artifactId>neo4j-ogm-http-driver</artifactId>
+      <version>${neo4j}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
