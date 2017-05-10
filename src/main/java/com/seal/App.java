@@ -1,8 +1,11 @@
 package com.seal;
 
+import com.seal.algorithm.PheromoneTable;
+import com.seal.algorithm.PheromoneTableImpl;
 import com.seal.io.IO;
 import com.seal.io.ReadFile;
 import com.seal.keyboard.*;
+import com.seal.util.CharSetProducer;
 import com.seal.util.Key;
 import com.seal.util.dto.ObjectiveFunctionsValues;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Hello world!
@@ -49,6 +53,20 @@ class Test {
             System.out.println("GlobalScore : " + globalScore);
             System.out.println("\n>>>>>>>>>>>>>>>>>>>>>\n");
         }
+
+    }
+
+    public void algorithemTest() {
+        List<Character> banglaUnicodeChars = Init.loadQwert(IO.streamOf("qwerty.txt"))
+                .keySet()
+                .stream()
+                .collect(Collectors.toList());
+        List<String> charSequence = CharSetProducer.CHAR_SET_PRODUCER.getCharSet();
+        PheromoneTable pheromoneTable = PheromoneTableImpl.getBuilder()
+                .setBanglaUnicodeCharList(banglaUnicodeChars)
+                .setCharSetList(charSequence)
+                .setInitialValue(1.0)
+                .build();
 
     }
 
