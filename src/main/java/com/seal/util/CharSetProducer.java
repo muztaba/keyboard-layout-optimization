@@ -1,4 +1,4 @@
-package com.seal.algorithm;
+package com.seal.util;
 
 
 import java.util.ArrayList;
