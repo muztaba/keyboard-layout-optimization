@@ -14,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j>1.7.21</slf4j>
     <neo4j>2.1.1</neo4j>
+    <logback>1.2.3</logback>
   </properties>
 
   <dependencies>
@@ -30,10 +31,16 @@
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j}</version>
     </dependency>
+    <!--Logback-->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j}</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback}</version>
     </dependency>
 
     <!--Neo4j-->

@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
  * Hello world!
  */
 public class App {
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
+
     public static void main(String[] args) {
         new Test().synchronousOperation();
     }
@@ -33,6 +35,7 @@ class Test {
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
     public void synchronousOperation() {
+        logger.info("Starting up application");
         Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
         List<String> keyboards = IO.listOfFilesName("keyboards");
         String str = readFile();
@@ -40,18 +43,16 @@ class Test {
         String ref = refKeyboardName(keyboards);
         KeyMap<Character, String> refKeymap = Init.loadKeyMap(IO.streamOf(ref));
         ObjectiveFunctionsValues refValues = objectiveFunction(qwerty, refKeymap, str);
-        System.out.println(ref + " \n" +refValues);
-        System.out.println("\n>>>>>>>>>>>>>>>>>>>>>\n");
+        logger.info("Reference Keyboard [{}], Values [{}]", ref, refValues);
         keyboards.removeIf(i -> i.contains("-ref"));
 
         for (String fileName : keyboards) {
-            System.out.println(fileName.split("\\\\")[1]);
+            logger.info("File name [{}]", fileName.split("\\\\")[1]);
             KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
             ObjectiveFunctionsValues values = objectiveFunction(qwerty, keymap, str);
             double globalScore = values.globalScore(refValues);
-            System.out.println(values);
-            System.out.println("GlobalScore : " + globalScore);
-            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>\n");
+            logger.info("Values = [{}]",values);
+            logger.info("GlobalScore [{}]", globalScore);
         }
 
     }
@@ -106,8 +107,6 @@ class Test {
         } catch (Exception e) {
 
         }
-
-
     }
 
 }
