@@ -1,4 +1,4 @@
-package com.seal.algorithm;
+package com.seal.algorithm.aco;
 
 import java.util.function.Function;
 

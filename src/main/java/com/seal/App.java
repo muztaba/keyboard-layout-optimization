@@ -1,7 +1,7 @@
 package com.seal;
 
-import com.seal.algorithm.PheromoneTable;
-import com.seal.algorithm.PheromoneTableImpl;
+import com.seal.algorithm.aco.PheromoneTable;
+import com.seal.algorithm.aco.PheromoneTableImpl;
 import com.seal.io.IO;
 import com.seal.io.ReadFile;
 import com.seal.keyboard.*;
