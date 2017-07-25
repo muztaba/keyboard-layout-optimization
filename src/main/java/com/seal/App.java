@@ -47,7 +47,7 @@ class Test {
         keyboards.removeIf(i -> i.contains("-ref"));
 
         for (String fileName : keyboards) {
-            logger.info("File name [{}]", fileName.split("\\\\")[1]);
+            logger.info("File name [{}]", fileName);
             KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
             ObjectiveFunctionsValues values = objectiveFunction(qwerty, keymap, str);
             double globalScore = values.globalScore(refValues);
@@ -97,13 +97,11 @@ class Test {
     }
 
     void fileWrite(List<Key> macro) {
-        try {
-            PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get("outputOne.txt")));
+        try(PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get("outputOne.txt")))) {
             macro.stream()
                     .mapToInt(Key::getLetter)
                     .mapToObj(i -> String.valueOf((char) i))
                     .forEach(out::print);
-            out.close();
         } catch (Exception e) {
 
         }
