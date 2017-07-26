@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class CollectionUtil {
 
-    public <E> List<E> copyOf(List<E> src) {
+    public static  <E> List<E> copyOf(List<E> src) {
         List<E> dest = new ArrayList<>(src.size());
         src.forEach(i -> dest.add(i));
         return dest;
