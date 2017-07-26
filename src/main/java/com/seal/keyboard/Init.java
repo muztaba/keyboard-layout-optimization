@@ -34,12 +34,11 @@ public class Init {
         return keyPosition;
     }
 
-    public static KeyMap<Character, String> loadKeyMap(Stream<String> stream) {
-        Map<Character, String> map = stream
+    public static Map<Character, String> loadKeyMap(Stream<String> stream) {
+        return stream
                 .map(i -> i.split(" "))
                 .filter(check)
                 .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
-        return new KeyMap<>(map);
     }
 
 }

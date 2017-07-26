@@ -41,14 +41,14 @@ class Test {
         String str = readFile();
 
         String ref = refKeyboardName(keyboards);
-        KeyMap<Character, String> refKeymap = Init.loadKeyMap(IO.streamOf(ref));
+        Map<Character, String> refKeymap = Init.loadKeyMap(IO.streamOf(ref));
         ObjectiveFunctionsValues refValues = objectiveFunction(qwerty, refKeymap, str);
         logger.info("Reference Keyboard [{}], Values [{}]", ref, refValues);
         keyboards.removeIf(i -> i.contains("-ref"));
 
         for (String fileName : keyboards) {
             logger.info("File name [{}]", fileName);
-            KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
+            Map<Character, String> keymap = Init.loadKeyMap(IO.streamOf(fileName));
             ObjectiveFunctionsValues values = objectiveFunction(qwerty, keymap, str);
             double globalScore = values.globalScore(refValues);
             logger.info("Values = [{}]",values);
@@ -80,7 +80,7 @@ class Test {
         else throw new RuntimeException("No Reference Keyboard Found");
     }
 
-    public ObjectiveFunctionsValues objectiveFunction(Map<Character, Key> qwerty, KeyMap<Character, String> keymap, String str) {
+    public ObjectiveFunctionsValues objectiveFunction(Map<Character, Key> qwerty, Map<Character, String> keymap, String str) {
         List<Key> macro = KeyMapProcessor.load(keymap, qwerty)
                 .setString(str)
                 .getKeyMap();

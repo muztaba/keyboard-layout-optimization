@@ -14,15 +14,15 @@ public class KeyMapProcessor {
 
     private List<Key> macroList;
 
-    private final KeyMap<Character, String> keyMap;
+    private final Map<Character, String> keyMap;
     private final Map<Character, Key> keyPosition;
 
-    private KeyMapProcessor(KeyMap<Character, String> keyMap, Map<Character, Key> keyPosition) {
+    private KeyMapProcessor(Map<Character, String> keyMap, Map<Character, Key> keyPosition) {
         this.keyMap = keyMap;
         this.keyPosition = keyPosition;
     }
 
-    public static KeyMapProcessor load(KeyMap<Character, String> keyMap, Map<Character, Key> keyPosition) {
+    public static KeyMapProcessor load(Map<Character, String> keyMap, Map<Character, Key> keyPosition) {
         return new KeyMapProcessor(keyMap, keyPosition);
     }
 
@@ -72,7 +72,10 @@ public class KeyMapProcessor {
     }
 
     private String get(int c) {
-        return keyMap.getMap((char) c);
+        char ch = (char) c;
+        if (keyMap.containsKey(ch))
+            return keyMap.get(ch);
+        return "";
     }
 
     private Key getKeyPosition(char c) {
