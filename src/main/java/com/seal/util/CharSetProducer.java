@@ -4,18 +4,24 @@ package com.seal.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Created by seal on 3/6/2017.
  */
-public enum   CharSetProducer {
-
-    CHAR_SET_PRODUCER;
+public class CharSetProducer {
 
     private List<String> stringList;
 
-    CharSetProducer() {
+    private static CharSetProducer instance;
+
+    private CharSetProducer() {
         produceCharSet();
+    }
+
+    private CharSetProducer(Predicate predicate) {
+        this();
     }
 
     private void produceCharSet() {
@@ -37,7 +43,29 @@ public enum   CharSetProducer {
         }
     }
 
+    private void filter(Predicate predicate) {
+
+    }
+
+    private void check() {
+        if (Objects.isNull(stringList)) {
+            produceCharSet();
+        }
+    }
+
     public List<String> getCharSet() {
+        check();
         return stringList;
+    }
+
+    public static CharSetProducer load() {
+        if (Objects.isNull(instance)) {
+            instance = new CharSetProducer();
+        }
+        return instance;
+    }
+
+    public static CharSetProducer load(Predicate predicate) {
+        return new CharSetProducer(predicate);
     }
 }

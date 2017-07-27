@@ -35,7 +35,7 @@ class Test {
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
     public void synchronousOperation() {
-        logger.info("Starting up application");
+        logger.info("Starting up application ....");
         Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
         List<String> keyboards = IO.listOfFilesName("keyboards");
         String str = readFile();
@@ -62,7 +62,9 @@ class Test {
                 .keySet()
                 .stream()
                 .collect(Collectors.toList());
-        List<String> charSequence = CharSetProducer.CHAR_SET_PRODUCER.getCharSet();
+        CharSetProducer charSetProducer = CharSetProducer.load();
+        List<String> charSequence = charSetProducer.getCharSet();
+        logger.info("CharSequence size [{}]", charSequence.size());
         PheromoneTable pheromoneTable = PheromoneTableImpl.getBuilder()
                 .setBanglaUnicodeCharList(banglaUnicodeChars)
                 .setCharSetList(charSequence)
