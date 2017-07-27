@@ -58,40 +58,52 @@ public class ObjectiveFunctionsValues {
     //--------------- Builder ---------------//
 
     public static class Builder {
-        private double load;
-        private long keyPress;
-        private long handAlternation;
-        private double distance;
-        private double bigStepDistance;
-        private long hitDirection;
+        private double load = 1.0;
+        private long keyPress = 1L;
+        private long handAlternation = 1L;
+        private double distance = 1.0;
+        private double bigStepDistance = 1.0;
+        private long hitDirection = 1L;
 
         public Builder setLoad(double load) {
-            this.load = load;
+            if (load != 0) {
+                this.load = load;
+            }
             return this;
         }
 
         public Builder setKeyPress(long keyPress) {
-            this.keyPress = keyPress;
+            if (keyPress != 0) {
+                this.keyPress = keyPress;
+            }
             return this;
         }
 
         public Builder setHandAlternation(long handAlternation) {
-            this.handAlternation = handAlternation;
+            if (handAlternation != 0) {
+                this.handAlternation = handAlternation;
+            }
             return this;
         }
 
         public Builder setDistance(double distance) {
-            this.distance = distance;
+            if (distance != 0) {
+                this.distance = distance;
+            }
             return this;
         }
 
         public Builder setBigStepDistance(double bigStepDistance) {
-            this.bigStepDistance = bigStepDistance;
+            if (bigStepDistance != 0) {
+
+            }
             return this;
         }
 
         public Builder setHitDirection(long hitDirection) {
-            this.hitDirection = hitDirection;
+            if (hitDirection != 0) {
+                this.hitDirection = hitDirection;
+            }
             return this;
         }
 

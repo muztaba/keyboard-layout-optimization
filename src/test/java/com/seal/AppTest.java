@@ -5,7 +5,6 @@ import com.seal.keyboard.Init;
 import com.seal.keyboard.KeyMap;
 import com.seal.keyboard.KeyMapProcessor;
 import com.seal.util.Key;
-import com.seal.util.StaticUtil;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -46,16 +45,25 @@ public class AppTest
                 .setString(str)
                 .getKeyMap();
 
-        macro.stream()
+/*        macro.stream()
                 .mapToInt(Key::getLetter)
                 .mapToObj(i -> String.valueOf((char) i))
-                .forEach(System.out::print);
+                .forEach(System.out::print);*/
+/*
+        CharSetProducer.CHAR_SET_PRODUCER
+                .getCharSet()
+                .stream()
+                .forEach(System.out::println);*/
+        for (char c : str.toCharArray()) {
+            System.out.println(c);
+        }
 
     }
     Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));
     KeyMap<Character, String> keymap = Init.loadKeyMap(IO.streamOf("keyboards/jatiya.txt"));
 
-    public static final String str = "উপদ্বীপে";
+    public static final String str = "\n" +
+            "আজ";
 
 
     public void testKeyMapProcessor()
