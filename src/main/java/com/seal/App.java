@@ -6,6 +6,7 @@ import com.seal.io.IO;
 import com.seal.io.ReadFile;
 import com.seal.keyboard.*;
 import com.seal.util.CharSetProducer;
+import com.seal.util.Filter;
 import com.seal.util.Key;
 import com.seal.util.dto.ObjectiveFunctionsValues;
 import org.slf4j.Logger;
@@ -62,7 +63,16 @@ class Test {
                 .keySet()
                 .stream()
                 .collect(Collectors.toList());
-        CharSetProducer charSetProducer = CharSetProducer.load();
+        CharSetProducer charSetProducer = CharSetProducer
+                .load()
+                .setFilter(new Filter() {
+                    @Override
+                    public boolean accept(String str) {
+                        return false;
+                    }
+                })
+                .build();
+
         List<String> charSequence = charSetProducer.getCharSet();
         logger.info("CharSequence size [{}]", charSequence.size());
         PheromoneTable pheromoneTable = PheromoneTableImpl.getBuilder()

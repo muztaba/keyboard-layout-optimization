@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by seal on 3/6/2017.
@@ -14,27 +14,38 @@ public class CharSetProducer {
 
     private List<String> stringList;
 
-    private static CharSetProducer instance;
+    private final Filter filter;
 
-    private CharSetProducer() {
+    private CharSetProducer(Filter filter) {
+        this.filter = filter;
         produceCharSet();
     }
 
-    private CharSetProducer(Predicate predicate) {
-        this();
+    private void init() {
+        List<String> list = produceCharSet();
+        if (Objects.nonNull(filter)) {
+            this.stringList = list.stream()
+                    .filter(i -> filter.accept(i))
+                    .collect(Collectors.collectingAndThen(
+                            Collectors.toList(), Collections::unmodifiableList
+                    ));
+        } else {
+            this.stringList = list;
+        }
     }
 
-    private void produceCharSet() {
+
+    private List<String> produceCharSet() {
         List<String> list = new ArrayList<>();
         createNext26("", list);
         createNext26("+", list);
         for (int i = 'a'; i <= 'z'; i++) {
             createNext26((char) i + "+", list);
         }
-        this.stringList = Collections.unmodifiableList(list);
+        return list;
     }
 
-    private void createNext26(String prefix, List<String > list) {
+    private void createNext26(String prefix, List<String> list) {
         int v = prefix.isEmpty() ? -1 : prefix.codePointAt(0);
         for (int i = 'a'; i <= 'z'; i++) {
             if (v != i) {
@@ -43,29 +54,26 @@ public class CharSetProducer {
         }
     }
 
-    private void filter(Predicate predicate) {
-
-    }
-
-    private void check() {
-        if (Objects.isNull(stringList)) {
-            produceCharSet();
-        }
-    }
-
     public List<String> getCharSet() {
-        check();
         return stringList;
     }
 
-    public static CharSetProducer load() {
-        if (Objects.isNull(instance)) {
-            instance = new CharSetProducer();
+    public static class Builder {
+        private Filter filter;
+
+        public Builder setFilter(Filter filter) {
+            this.filter = filter;
+            return this;
         }
-        return instance;
+
+        public CharSetProducer build() {
+            CharSetProducer charSetProducer = new CharSetProducer(filter);
+            charSetProducer.init();
+            return charSetProducer;
+        }
     }
 
-    public static CharSetProducer load(Predicate predicate) {
-        return new CharSetProducer(predicate);
+    public static Builder load() {
+        return new Builder();
     }
 }
