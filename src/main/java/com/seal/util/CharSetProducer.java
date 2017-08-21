@@ -1,10 +1,7 @@
 package com.seal.util;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,10 +36,18 @@ public class CharSetProducer {
         List<String> list = new ArrayList<>();
         createNext26("", list);
         createNext26("+", list);
-        for (int i = 'a'; i <= 'z'; i++) {
+        createSymbols(list);
+        /*for (int i = 'a'; i <= 'z'; i++) {
             createNext26((char) i + "+", list);
-        }
+        }*/
         return list;
+    }
+
+    private static final List<String> symbolList = Arrays.asList("-", "=", "[", "]", ";", "\\", "'", "/", ".", ",");
+
+    private void createSymbols(List<String> list) {
+        list.addAll(symbolList);
+        symbolList.forEach(i -> list.add("+" + i));
     }
 
     private void createNext26(String prefix, List<String> list) {

@@ -4,6 +4,7 @@ import com.seal.util.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,6 +41,12 @@ public class Init {
                 .filter(check)
                 .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
         return new KeyMap<>(map);
+    }
+
+    public static List<Character> loadBanglaChars(Stream<String> stream) {
+        return stream.map(String ::trim)
+                .map(i -> i.charAt(0))
+                .collect(Collectors.toList());
     }
 
 }
