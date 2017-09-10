@@ -7,13 +7,15 @@ import java.util.Objects;
 /**
  * Created by seal on 4/4/2017.
  */
-public class ObjectiveFunctionsValues {
+public class ObjectiveFunctionsValues implements Comparable<ObjectiveFunctionsValues>{
     public final double load;
     public final long keyPress;
     public final long handAlternation;
     public final double distance;
     public final double bigStepDistance;
     public final long hitDirection;
+
+    private double gobalScore;
 
     private ObjectiveFunctionsValues(double load, long keyPress, long handAlternation, double distance, double bigStepDistance, long hitDirection) {
         this.load = load;
@@ -36,9 +38,15 @@ public class ObjectiveFunctionsValues {
         double bigStepDistance = (this.bigStepDistance * StaticUtil.WeightCoefficients.Avoid_Steps.getCoefficient()) / refKeyboard.bigStepDistance;
         double hitDirection = (this.hitDirection * StaticUtil.WeightCoefficients.Hit_Direction.getCoefficient()) / refKeyboard.hitDirection;
 
-        return load + keyPress + handAlternation + distance + bigStepDistance + hitDirection;
+        gobalScore = load + keyPress + handAlternation + distance + bigStepDistance + hitDirection;
+
+        return gobalScore;
     }
 
+
+    public double getGobalScore() {
+        return gobalScore;
+    }
 
     //--------------- toString---------------//
 
@@ -52,6 +60,12 @@ public class ObjectiveFunctionsValues {
                 ", bigStepDistance=" + bigStepDistance +
                 ", hitDirection=" + hitDirection +
                 '}';
+    }
+
+    @Override
+    public int compareTo(ObjectiveFunctionsValues o) {
+        // TODO How to implemented compare method ?
+        return Double.compare(o.getGobalScore(), this.gobalScore);
     }
 
 
