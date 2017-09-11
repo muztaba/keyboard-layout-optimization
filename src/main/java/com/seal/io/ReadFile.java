@@ -1,5 +1,8 @@
 package com.seal.io;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,9 +14,11 @@ public class ReadFile {
 
     private BufferedReader reader;
 
+    private final LineIterator it;
+
     public ReadFile(String path) {
         try {
-            this.reader = Files.newBufferedReader(Paths.get(path));
+            this.it = FileUtils.lineIterator(new File(path), "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -21,14 +26,12 @@ public class ReadFile {
 
     public String readNextLine(int line) {
         StringBuilder builder = new StringBuilder();
-        try {
-            for (int i = 0; i < line; i++) {
-                String str = reader.readLine();
-                if (str == null) break;
-                builder.append(str);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for (int i = 0; it.hasNext() && i < line; i++) {
+            String str = it.nextLine();
+            // TODO review for if found empty line
+            if (str.isEmpty()) continue;
+            str = str.replaceAll("\\s+", "");
+            builder.append(str);
         }
         return builder.toString();
     }
