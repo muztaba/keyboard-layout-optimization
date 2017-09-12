@@ -50,7 +50,7 @@ public class Ant {
                 .filter(i -> !usedBanglaChar.contains(i))
                 .map(i -> {
                     int index = selectKeyMap(i, usedColumnIndex);
-                    pheromoneTable.evaporate(i, index, .75 /*Should be from config file*/);
+                    pheromoneTable.evaporate(i, index, .98 /*Should be from config file*/);
                     usedBanglaChar.add(i);
                     return new Node(index, i);
                 })
