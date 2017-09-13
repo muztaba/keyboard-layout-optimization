@@ -3,6 +3,7 @@ package com.seal.keyboard;
 import com.seal.util.Bangla;
 import com.seal.util.Key;
 import com.seal.util.SpacialKeyFactory;
+import com.seal.util.StaticUtil;
 
 import java.util.*;
 
@@ -35,7 +36,7 @@ public class KeyMapProcessor {
                 Key spaceKey = SpacialKeyFactory.getKey(prevKey.getHand(), SpacialKeyFactory.SpacialKey.Space);
                 macroList.add(spaceKey);
 
-            } else if (isBangla(c)) {
+            } else if (StaticUtil.isBangla(c)) {
                 String keymap = get(c);
                 macroList.addAll(getMacro(keymap));
             }
@@ -87,10 +88,4 @@ public class KeyMapProcessor {
     private boolean isModifier(char c) {
         return c == '+';
     }
-
-    private boolean isBangla(int codePoint) {
-        return ((codePoint >= Bangla.BANGLA_CHAR_START.getCodePoint() && codePoint <= Bangla.BANGLA_CHAR_END.getCodePoint()) &&
-                (codePoint <= Bangla.BANGLA_NUMBER_START.getCodePoint() || codePoint >= Bangla.BANGLA_NUMBER_END.getCodePoint()));
-    }
-
 }

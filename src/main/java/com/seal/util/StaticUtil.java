@@ -71,4 +71,8 @@ public class StaticUtil {
     public static double getCol(int y) {
         return column[y];
     }
+
+    public static boolean isBangla(int codePoint) {
+        return ((codePoint >= Bangla.BANGLA_CHAR_START.getCodePoint() && codePoint <= Bangla.BANGLA_CHAR_END.getCodePoint()));
+    }
 }

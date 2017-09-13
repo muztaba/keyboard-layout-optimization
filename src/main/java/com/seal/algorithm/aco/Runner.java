@@ -32,10 +32,12 @@ public class Runner {
         logger.info("ACO application started...");
         final Configuration configuration = Configuration.load();
         final EvaluateService evaluateService = EvaluationFactory.getService();
-        final ReadFile readFile = new ReadFile("text.txt");
 
         List<Character> banglaChars = Init.loadBanglaChars(IO.streamOf("bangla-char.txt"));
         CharSetProducer charSet = CharSetProducer.load().build();
+
+        final ReadFile readFile = new ReadFile("text.txt", banglaChars);
+
 
         KeyMap<Character, String> refKeymap = Init.loadKeyMap(IO.streamOf("keyboards/bijoy-ref.txt"));
 
@@ -55,7 +57,7 @@ public class Runner {
         PriorityQueue<WinterIsHere> queue = new PriorityQueue<>();
         for (int itr = 0; itr < iteration; itr++) {
             // TODO should read line number from application.properties
-            String strs = readFile.readNextLine(10);
+            String strs = readFile.readNextLine(2);
 
             for (int i = 0; i < antList.size(); i++) {
                 Ant ant = antList.get(i);
@@ -68,6 +70,7 @@ public class Runner {
             WinterIsHere seasonFinale = queue.poll();
             pheromoneTable.updatePheromoneTable(i -> i * 0.95);
             queue.clear();
+            logger.info("** [{}]", seasonFinale);
         }
 
     }

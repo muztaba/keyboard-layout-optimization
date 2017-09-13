@@ -32,7 +32,7 @@ public class Runner {
         logger.info("Data Char Set size [{}]", charSet.getCharSet().size());
 
 
-        ReadFile readFile = new ReadFile("text.txt");
+        ReadFile readFile = new ReadFile("text.txt", null);
 
         logger.info("Loading QWETY ...");
         Map<Character, Key> qwerty = Init.loadQwert(IO.streamOf("qwerty.txt"));

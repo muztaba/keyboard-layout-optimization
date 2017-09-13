@@ -104,7 +104,7 @@ class Test {
     }
 
     public String readFile() {
-        ReadFile reader = new ReadFile("text.txt"); // need to remove , otherwise read same line repeatedly
+        ReadFile reader = new ReadFile("text.txt", null); // need to remove , otherwise read same line repeatedly
         return reader.readNextLine(10);
     }
 
