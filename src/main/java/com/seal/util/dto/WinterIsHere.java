@@ -49,6 +49,7 @@ public class WinterIsHere implements Comparable<WinterIsHere> {
     public static String toString(WinterIsHere o) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Global Score [%s]", o.getGlobalScore()));
+        sb.append("\n");
         sb.append(o.getKeyMap().toString());
         return sb.toString();
     }

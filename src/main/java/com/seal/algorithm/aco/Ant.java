@@ -33,7 +33,7 @@ public class Ant {
     public KeyMap<Character, String> run(String string) {
         Set<Character> usedBanglaChar = new HashSet<>(banglaChars.size());
         Set<Integer> usedColumnIndex = new HashSet<>(charSet.size());
-//        Map<Character, String> keyMap = new HashMap<>(banglaChars.size());
+        Map<Character, String> keyMap = new HashMap<>(banglaChars.size());
 
         class Node {
             int index;
@@ -45,26 +45,27 @@ public class Ant {
             }
         }
 
-        Map<Character, String> keyMap = string.chars()
+/*        Map<Character, String> keyMap = string.chars()
                 .mapToObj(i -> (char) i)
                 .filter(i -> !usedBanglaChar.contains(i))
                 .map(i -> {
                     int index = selectKeyMap(i, usedColumnIndex);
-                    pheromoneTable.evaporate(i, index, .98 /*Should be from config file*/);
+                    pheromoneTable.evaporate(i, index, .98 *//*Should be from config file*//*);
                     usedBanglaChar.add(i);
+                    usedColumnIndex.add(index);
                     return new Node(index, i);
                 })
-                .collect(Collectors.toMap(i -> i.ch, i -> charSet.get(i.index)));
+                .collect(Collectors.toMap(i -> i.ch, i -> charSet.get(i.index)));*/
 
-/*
         for (char c : string.toCharArray()) {
             if (!usedBanglaChar.contains(c)) {
                 int index = selectKeyMap(c, usedColumnIndex);
                 keyMap.put(c, charSet.get(index));
-                pheromoneTable.evaporate(c, index, .75 *//*Should be from config file*//*);
+                pheromoneTable.evaporate(c, index, .98);
                 usedBanglaChar.add(c);
+                usedColumnIndex.add(index);
             }
-        }*/
+        }
         return new KeyMap<>(keyMap);
     }
 
