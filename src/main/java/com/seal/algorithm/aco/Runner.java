@@ -55,6 +55,7 @@ public class Runner {
         final int iteration = configuration.getInt("aco.iteration");
         Map<String, KeyMap<Character, String>> result = new HashMap<>();
         PriorityQueue<WinterIsHere> queue = new PriorityQueue<>();
+        PriorityQueue<WinterIsHere> queue2 = new PriorityQueue<>();
         for (int itr = 0; itr < iteration; itr++) {
             // TODO should read line number from application.properties
             String strs = readFile.readNextLine(2);
@@ -69,10 +70,11 @@ public class Runner {
             }
             WinterIsHere seasonFinale = queue.poll();
             pheromoneTable.updatePheromoneTable(i -> i * 0.95);
+            queue2.add(seasonFinale);
             queue.clear();
             logger.info("** [{}]", seasonFinale);
         }
-
+        logger.info("Final Episode \n {}", WinterIsHere.toString(queue2.poll()));
     }
 
     private static List<Ant> getAnt(int number, List<Character> banglaChars, List<String> charSet, PheromoneTable pheromoneTable) {

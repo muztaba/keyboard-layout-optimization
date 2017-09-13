@@ -20,21 +20,15 @@ public class KeyMap<C, M> {
         return (M)"";
     }
 
- /*   public static Builder builder() {
-        return new Builder<>();
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        keyMap.entrySet().forEach(i -> {
+            sb.append(i.getKey());
+            sb.append(" -> ");
+            sb.append(i.getValue());
+            sb.append("\n");
+        });
+        return sb.toString();
     }
-
-    private static class Builder<C, M> {
-        private Map<C, M> keyMap;
-
-        public Builder setKeyMap(Map<C, M> keyMap) {
-            this.keyMap = keyMap;
-            return this;
-        }
-
-        public KeyMap<C, M> build() {
-            return new KeyMap<C, M>(keyMap);
-        }
-
-    }*/
 }
