@@ -5,11 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 /**
  * Created by seal on 5/10/2017.
@@ -17,6 +15,7 @@ import java.util.stream.Stream;
 public class Ant {
 
     private static final Logger logger = LoggerFactory.getLogger(Ant.class);
+    private static final Random rand = new Random();
 
     public final String antId;
     private final PheromoneTable pheromoneTable;
@@ -45,18 +44,6 @@ public class Ant {
             }
         }
 
-/*        Map<Character, String> keyMap = string.chars()
-                .mapToObj(i -> (char) i)
-                .filter(i -> !usedBanglaChar.contains(i))
-                .map(i -> {
-                    int index = selectKeyMap(i, usedColumnIndex);
-                    pheromoneTable.evaporate(i, index, .98 *//*Should be from config file*//*);
-                    usedBanglaChar.add(i);
-                    usedColumnIndex.add(index);
-                    return new Node(index, i);
-                })
-                .collect(Collectors.toMap(i -> i.ch, i -> charSet.get(i.index)));*/
-
         for (char c : string.toCharArray()) {
             if (!usedBanglaChar.contains(c)) {
                 int index = selectKeyMap(c, usedColumnIndex);
@@ -66,7 +53,32 @@ public class Ant {
                 usedColumnIndex.add(index);
             }
         }
+        // remaining bangla char set randomly assigned
+        if (usedBanglaChar.size() != banglaChars.size()) {
+            assignRemainCharsSet(keyMap, usedColumnIndex, usedBanglaChar);
+        }
+
         return new KeyMap<>(keyMap);
+    }
+
+    private void assignRemainCharsSet(Map<Character, String> keymap,
+                                      Set<Integer> usedColumnIndex,
+                                      Set<Character> usedBanglaChar) {
+        final List<Integer> unassignedIndexes = getUnassignedIndexes(usedColumnIndex);
+        banglaChars.stream()
+                .filter(ch -> !usedBanglaChar.contains(ch))
+                .forEach(ch -> {
+                    int index = unassignedIndexes.get(rand.nextInt(unassignedIndexes.size()));
+                    keymap.put(ch, charSet.get(index));
+                    unassignedIndexes.remove(Integer.valueOf(index));
+                });
+    }
+
+    private List<Integer> getUnassignedIndexes(Set<Integer> usedColumnIndex) {
+        return IntStream.range(0, charSet.size())
+                .filter(i -> !usedColumnIndex.contains(i))
+                .boxed()
+                .collect(Collectors.toList());
     }
 
     private int selectKeyMap(char c, Set<Integer> usedColumnIndex) {
