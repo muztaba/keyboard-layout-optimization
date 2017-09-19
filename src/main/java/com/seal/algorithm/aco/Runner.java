@@ -60,8 +60,7 @@ public class Runner {
             // TODO should read line number from application.properties
             String strs = readFile.readNextLine(2);
 
-            for (int i = 0; i < antList.size(); i++) {
-                Ant ant = antList.get(i);
+            for (Ant ant : antList) {
                 KeyMap<Character, String> keyMap = ant.run(strs);
                 ObjectiveFunctionsValues refValues = evaluateService.evaluate(strs, refKeymap);
                 ObjectiveFunctionsValues values = evaluateService.evaluate(strs, keyMap);
