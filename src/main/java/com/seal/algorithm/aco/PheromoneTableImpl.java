@@ -33,12 +33,26 @@ public class PheromoneTableImpl implements PheromoneTable {
     }
 
     @Override
+    public void evaporate(Function<Double, Double> updateFunction) {
+        for (double[] array : pheromoneTable.values()) {
+            for (int i = 0; i < array.length; i++) {
+                array[i] = updateFunction.apply(array[i]);
+            }
+        }
+    }
+
+    /*@Override
     public void updatePheromoneTable(Function<Double, Double> updateFunction) {
         for (double[] array : pheromoneTable.values()) {
             for (int i = 0; i < array.length; i++) {
                 array[i] = updateFunction.apply(array[i]);
             }
         }
+    }*/
+
+    @Override
+    public void updatePheromoneTable(char ch, int index, double updateVal) {
+        pheromoneTable.get(ch)[index] = pheromoneTable.get(ch)[index] * updateVal;
     }
 
     public static Builder getBuilder() {

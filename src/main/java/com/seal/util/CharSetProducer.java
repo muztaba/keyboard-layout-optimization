@@ -63,6 +63,10 @@ public class CharSetProducer {
         return stringList;
     }
 
+    public int index(String str) {
+        return stringList.indexOf(str);
+    }
+
     public static class Builder {
         private Filter filter;
 

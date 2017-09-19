@@ -8,8 +8,10 @@ import com.seal.keyboard.EvaluationFactory;
 import com.seal.keyboard.Init;
 import com.seal.keyboard.KeyMap;
 import com.seal.util.CharSetProducer;
+import com.seal.util.StaticUtil;
 import com.seal.util.dto.ObjectiveFunctionsValues;
 import com.seal.util.dto.WinterIsHere;
+import org.apache.commons.lang3.CharSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Created by Farruck Ahmed Tusar on 30-Aug-17.
@@ -67,13 +70,30 @@ public class Runner {
                 double globalScore = values.globalScore(refValues);
                 queue.add(new WinterIsHere(itr, keyMap, values, globalScore));
             }
-            WinterIsHere seasonFinale = queue.poll();
-            pheromoneTable.updatePheromoneTable(i -> i * 0.95);
-            queue2.add(seasonFinale);
+
+            pheromoneTable.evaporate(i -> i * 0.95); // evaporate pheromone matrix
+            List<WinterIsHere> listOfBestResult = bestAntResult(queue, configuration.getInt("aco.p"));
+            for (int i = 0; i < listOfBestResult.size(); i++) {
+                double updateVal = StaticUtil.pheromoneUpdate[i];
+                KeyMap<Character, String > obj = listOfBestResult.get(i).getKeyMap();
+                banglaChars.forEach(ch -> {
+                    int index = getCharSetIndex(obj.getMap(ch), charSet);
+                    pheromoneTable.updatePheromoneTable(ch , index, updateVal * 0.2);
+                });
+            }
             queue.clear();
-            logger.info("** [{}]", seasonFinale);
         }
         logger.info("Final Episode \n {}", WinterIsHere.toString(queue2.poll()));
+    }
+
+    private static List<WinterIsHere> bestAntResult(PriorityQueue<WinterIsHere> queue, int n) {
+        return Stream.generate(queue::poll)
+                .limit(n)
+                .collect(Collectors.toList());
+    }
+
+    private static int getCharSetIndex(String keymap, CharSetProducer charSet) {
+        return charSet.index(keymap);
     }
 
     private static List<Ant> getAnt(int number, List<Character> banglaChars, List<String> charSet, PheromoneTable pheromoneTable) {

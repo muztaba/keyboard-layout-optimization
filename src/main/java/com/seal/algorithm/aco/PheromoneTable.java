@@ -10,5 +10,7 @@ public interface PheromoneTable {
 
     void evaporate(char c, int index, double evaporateRate);
 
-    void updatePheromoneTable(Function<Double, Double> updateFunction);
+    void evaporate(Function<Double, Double> updateFunction);
+
+    void updatePheromoneTable(char ch, int index, double updateVal);
 }
