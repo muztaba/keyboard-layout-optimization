@@ -34,16 +34,6 @@ public class Ant {
         Set<Integer> usedColumnIndex = new HashSet<>(charSet.size());
         Map<Character, String> keyMap = new HashMap<>(banglaChars.size());
 
-        class Node {
-            int index;
-            char ch;
-
-            Node(int index, char ch) {
-                this.index = index;
-                this.ch = ch;
-            }
-        }
-
         for (char c : string.toCharArray()) {
             if (!usedBanglaChar.contains(c)) {
                 int index = selectKeyMap(c, usedColumnIndex);
