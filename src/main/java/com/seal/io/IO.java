@@ -40,4 +40,12 @@ public class IO {
         return Files.lines(Paths.get(path));
     }
 
+    public static void writeFile(String path, String content) {
+        try {
+            Files.write(Paths.get(path), content.getBytes());
+        } catch (IOException e ) {
+            logger.error("Error when write to file [{}], [{}]", path, e);
+        }
+    }
+
 }

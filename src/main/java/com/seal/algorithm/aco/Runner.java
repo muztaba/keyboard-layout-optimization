@@ -84,7 +84,9 @@ public class Runner {
             queue.clear();
             queue2.addAll(listOfBestResult);
         }
-        logger.info("Final Episode \n {}", WinterIsHere.toString(queue2.poll()));
+        WinterIsHere antResult = queue2.poll();
+        logger.info("Final Episode \n {}", WinterIsHere.toString(antResult));
+        IO.writeFile("keyboards/ant.txt", WinterIsHere.toString(antResult));
     }
 
     private static List<WinterIsHere> bestAntResult(PriorityQueue<WinterIsHere> queue, int n) {

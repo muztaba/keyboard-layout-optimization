@@ -34,7 +34,6 @@ public class ReadFile {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; it.hasNext() && i < line; i++) {
             String str = it.nextLine();
-            // TODO review for if found empty line
             if (str.isEmpty()) continue;
             str = getOnlyBanglaChar(str);
             builder.append(str);

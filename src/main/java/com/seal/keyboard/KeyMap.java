@@ -25,7 +25,7 @@ public class KeyMap<C, M> {
         StringBuilder sb = new StringBuilder();
         keyMap.entrySet().forEach(i -> {
             sb.append(i.getKey());
-            sb.append(" -> ");
+            sb.append(" ");
             sb.append(i.getValue());
             sb.append("\n");
         });
