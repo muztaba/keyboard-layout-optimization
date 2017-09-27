@@ -37,7 +37,7 @@ public class Init {
 
     public static KeyMap<Character, String> loadKeyMap(Stream<String> stream) {
         Map<Character, String> map = stream
-                .map(i -> i.split(" "))
+                .map(i -> i.trim().split(" "))
                 .filter(check)
                 .collect(Collectors.toMap(i -> i[0].charAt(0), i -> i[1]));
         return new KeyMap<>(map);

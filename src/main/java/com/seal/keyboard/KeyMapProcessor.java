@@ -77,7 +77,12 @@ public class KeyMapProcessor {
     }
 
     private Key getKeyPosition(char c) {
-        return keyPosition.get(c);
+        Key key = keyPosition.get(c);
+        if (Objects.isNull(key)) {
+            return Key.NULL_KEY_PATTERN;
+        } else {
+            return key;
+        }
     }
 
     public List<Key> getKeyMap() {

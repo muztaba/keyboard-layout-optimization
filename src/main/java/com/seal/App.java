@@ -104,8 +104,9 @@ class Test {
     }
 
     public String readFile() {
+        //ReadFile reader = new ReadFile("F:\\Wiki data dump\\DataDumpText\\articles_in_plain_text.txt", Init.loadBanglaChars(IO.streamOf("bangla-char.txt"))); // need to remove , otherwise read same line repeatedly
         ReadFile reader = new ReadFile("text.txt", Init.loadBanglaChars(IO.streamOf("bangla-char.txt"))); // need to remove , otherwise read same line repeatedly
-        return reader.readNextLine(10);
+        return reader.readNextLine(20);
     }
 
     void fileWrite(List<Key> macro) {

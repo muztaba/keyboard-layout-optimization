@@ -9,6 +9,9 @@ import java.io.Serializable;
  */
 public class Key implements Serializable {
 
+    public static final Key NULL_KEY_PATTERN = Key.build(new String[]{" ", "1", "1", "r", "p"});
+
+
     private final char letter;
     private final Point position;
     private final Hand hand;
